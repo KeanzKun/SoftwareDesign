@@ -34,5 +34,6 @@ public class AppsController {
 		int numRoom = InputValidation.readPositiveInt("Premise Room Number", 1, 50);
 		
 		premisesList.AddNewPremise(activePerson, name, address, type, capacity, numRoom);
+		System.out.println("Premise Added Succesfully!");
 	}
 }
