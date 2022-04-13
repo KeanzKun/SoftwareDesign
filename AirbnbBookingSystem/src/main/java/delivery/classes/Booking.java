@@ -82,8 +82,8 @@ public class Booking {
 		this.totalAmount = totalAmount;
 	}
 
-	public Payment getPayment() {
-		return payment;
+	public String getPayment() {
+		return payment.getPaymentID();
 	}
 
 	public double getServiceFee() {
@@ -103,6 +103,9 @@ public class Booking {
 		setStatus(false);
 	}
 	
+	public boolean getStatus(){
+		return status;
+	}
 	@Override
 	public String toString() {
 		return this.bookingID + ";" + this.getRegEmail() + ";" 
@@ -110,7 +113,7 @@ public class Booking {
 			+ this.getCheckInDate() + ";" + this.getCheckOutDate() + ";" 
 			+ Integer.toString(this.getNoOfPerson()) + ";" 
 			+ Double.toString(getTotalAmount()) + ";" 
-			+ this.getPayment().getPaymentID() + ";" 
+			+ this.getPayment() + ";" 
 			+ Double.toString(getServiceFee());
 	}
 }

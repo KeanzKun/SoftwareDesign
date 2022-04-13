@@ -28,6 +28,7 @@ public class BookingDAO {
 		System.out.println("Total Amount: " + booking.getTotalAmount());
 		System.out.println("Payment: " + booking.getPayment());
 		System.out.println("Service Fee: " + booking.getServiceFee());
+		System.out.println("Service Fee: " + booking.getStatus());
 	}
 
 	public static void updateBooking(Booking booking) throws Exception {
@@ -100,24 +101,21 @@ public class BookingDAO {
 
 	public static void cancelBooking(Booking booking) throws Exception {
 
-		LocalDate lt = LocalDate.now();
-		String todate = lt.toString();
-
-		System.out.println("Test todate to String: " + todate);
-		Date today = ft.parse(todate);
-
-		if (checkBookingHour(booking.getCheckInDate(), today )) {
+		if (checkBookingHour(booking.getCheckInDate())) {
 			booking.cancelBooking();
+			System.out.println(booking.getStatus());
 		} else {
 			System.out.println("Can't cancel within 24 hours");
 		}
 
 	}
 
-	public static boolean checkBookingHour(Date checkOut, Date today) {
-		long difference = checkOut.getTime() - today.getTime();
-		long differenceInHours = (difference / (1000 * 60 * 60)) % 24;
+	public static boolean checkBookingHour(Date checkIn) {
+		Date today = new Date();
 
+		long difference = checkIn.getTime() - today.getTime();
+		long differenceInHours = (difference / 3600000);
+		
 		if (differenceInHours >= 24) {
 			return true;
 		} else
@@ -156,56 +154,52 @@ public class BookingDAO {
 
 		return status;
 	}
-	
-	public void parseFile(String fileName,String searchStr) throws FileNotFoundException{
-        Scanner scan = new Scanner(new File(fileName));
-        while(scan.hasNext()){
-            String line = scan.nextLine().toLowerCase().toString();
-            if(line.contains(searchStr)){
-                System.out.println(line);
-            }
-        }
-    }
 
+	public void parseFile(String fileName, String searchStr) throws FileNotFoundException {
+		Scanner scan = new Scanner(new File(fileName));
+		while (scan.hasNext()) {
+			String line = scan.nextLine().toLowerCase().toString();
+			if (line.contains(searchStr)) {
+				System.out.println(line);
+			}
+		}
+	}
 
-    public static void searchAdmin(String[] args) throws FileNotFoundException{
-    	BookingDAO fileSearch = new BookingDAO();    	
-    	Scanner scanner = new Scanner(System.in);
+	public static void searchAdmin(String[] args) throws FileNotFoundException {
+		BookingDAO fileSearch = new BookingDAO();
+		Scanner scanner = new Scanner(System.in);
 
-    	System.out.println("Insert booking keyword to search: ");
-    	String keyword = scanner.nextLine();
-        fileSearch.parseFile("../AirbnbBookingSystem/Booking.txt", (keyword));
-    }
-	
-    public static void main(String[] args) throws Exception {
-    	BookingFile BF = new BookingFile();
-    	bookingList = BF.retrieve();
-    	
-    	Scanner scanner = new Scanner(System.in);
+		System.out.println("Insert booking keyword to search: ");
+		String keyword = scanner.nextLine();
+		fileSearch.parseFile("../AirbnbBookingSystem/Booking.txt", (keyword));
+	}
+
+	public static void main(String[] args) throws Exception {
+		Scanner scanner = new Scanner(System.in);
 		LocalDate lt = LocalDate.now();
 
 		String checkInDate = "2022-10-21";
 		String checkOutDate = "2022-10-22";
 		String todate = lt.toString();
-		
+
 		Date checkIn = ft.parse(checkInDate);
 		Date checkOut = ft.parse(checkOutDate);
 		Date today = ft.parse(todate);
 
-    	Payment pay1 = new Payment("P001");
-		Booking bookingDummy = new Booking(100006, "kean@gmail.com", "001", today, checkIn, checkOut, 3, 120.60, pay1, 20.60);
+		Payment pay1 = new Payment("P001");
+		Booking bookingDummy = new Booking(100006, "kean@gmail.com", "001",
+				today, checkIn, checkOut, 3, 120.60, pay1, 20.60);
 
-//    	BookingDAO fileSearch = new BookingDAO();
-//    	System.out.println("Insert booking keyword to search: ");
-//    	String keyword = scanner.nextLine();
-//        fileSearch.parseFile("../AirbnbBookingSystem/Booking.txt", (keyword));
+		BookingDAO fileSearch = new BookingDAO();
+		System.out.println("Insert booking keyword to search: ");
+		String keyword = scanner.nextLine();
+		fileSearch.parseFile("../AirbnbBookingSystem/Booking.txt", (keyword));
 
 		System.out.println("===============================================VIEW BOOKING");
 		viewBooking(bookingDummy);
-		System.out.println("\n===============================================UPDATE BOOKING");
-		updateBooking(bookingDummy);
-		System.out.println("\n===============================================VIEW BOOKING");
-		viewBooking(bookingDummy);
-    }
+		System.out.println("===============================================VIEW BOOKING");
+		System.out.println("===============================================CANCEL BOOKING");
+		cancelBooking(bookingDummy);
+		System.out.println("===============================================CANCEL BOOKING");
+	}
 }
-
