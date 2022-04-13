@@ -29,7 +29,7 @@ public class InputValidation {
 		return readInput;
 	}
 	
-	public static String readEmali(String info) {
+	public static String readEmail(String info) {
 		String readInput = "";
 		String  regexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@" 
 		        + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";

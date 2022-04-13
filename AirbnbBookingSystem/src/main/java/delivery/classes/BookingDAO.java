@@ -3,11 +3,9 @@ package delivery.classes;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 import delivery.database.*;
@@ -114,7 +112,7 @@ public class BookingDAO {
 
 	}
 
-	public boolean checkBookingHour(Date checkOut, Date today) {
+	public static boolean checkBookingHour(Date checkOut, Date today) {
 		long difference = checkOut.getTime() - today.getTime();
 		long differenceInHours = (difference / (1000 * 60 * 60)) % 24;
 
@@ -169,6 +167,7 @@ public class BookingDAO {
     	String keyword = scanner.nextLine();
         fileSearch.parseFile("../AirbnbBookingSystem/Booking.txt", (keyword));
     }
+	
     public static void main(String[] args) throws Exception {
     	Scanner scanner = new Scanner(System.in);
 		LocalDate lt = LocalDate.now();

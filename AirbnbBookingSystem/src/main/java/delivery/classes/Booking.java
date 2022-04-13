@@ -3,6 +3,7 @@ package delivery.classes;
 import java.util.Date;
 
 public class Booking {
+	private int bookingID;
 	private String regEmail;
 	private String premiseID;
 	private Date bookingDate;
@@ -12,12 +13,14 @@ public class Booking {
 	private double totalAmount;
 	private Payment payment;
 	private double serviceFee;
-	
-	public Booking(String regEmail, String premiseID, 
+	private boolean status;
+
+	public Booking(int bookingID, String regEmail, String premiseID, 
 		Date bookingDate, Date checkInDate, Date checkOutDate, 
 		int noOfPerson, double totalAmount, Payment payment, 
 		double serviceFee) {
 
+		this.bookingID = bookingID;
 		this.regEmail = regEmail;
 		this.premiseID = premiseID;
 		this.bookingDate = bookingDate;
@@ -27,10 +30,20 @@ public class Booking {
 		this.setTotalAmount(totalAmount);
 		this.payment = payment;
 		this.setServiceFee(serviceFee);
+		status = true;
+
+	}
+
+	public int getBookingID() {
+		return bookingID;
 	}
 
 	public String getRegEmail() {
 		return regEmail;
+	}
+
+	public String getPremiseID(){
+		return premiseID;
 	}
 
 	public Date getBookingDate() {
@@ -81,8 +94,23 @@ public class Booking {
 		this.serviceFee = serviceFee;
 	}
 	
+	public void setStatus(boolean status)
+	{
+		this.status = status;
+	}
+
+	public void cancelBooking(){
+		setStatus(false);
+	}
+	
 	@Override
 	public String toString() {
-		return this.getRegEmail() + ";" + this.premiseID + ";" + this.getBookingDate() + ";" + this.getCheckInDate() + ";" + this.getCheckOutDate() + ";" + Integer.toString(this.getNoOfPerson()) + ";" + Double.toString(getTotalAmount()) + ";" + this.getPayment().getPaymentMethod() + ";" + this.getPayment().getPaymentID() + ";" + Double.toString(getServiceFee());
+		return this.bookingID + ";" + this.getRegEmail() + ";" 
+			+ this.premiseID + ";" + this.getBookingDate() + ";" 
+			+ this.getCheckInDate() + ";" + this.getCheckOutDate() + ";" 
+			+ Integer.toString(this.getNoOfPerson()) + ";" 
+			+ Double.toString(getTotalAmount()) + ";" 
+			+ this.getPayment().getPaymentID() + ";" 
+			+ Double.toString(getServiceFee());
 	}
 }

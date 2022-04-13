@@ -59,9 +59,9 @@ public class BookingFile extends AbstractFile{
     }
 
     private Booking readBookingFile(String str) {
-        String email = null, id = null, paymentMethod, paymentID;
+        String email = null, premiseid = null, paymentID;
         Date bookingDate = null, checkInDate = null, checkOutDate = null;
-        int noOfPerson = 0;
+        int noOfPerson = 0, bookingid = 0;
         double totalAmount = 0, serviceFee = 0;
         Payment payment = null;
         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-mm-dd");
@@ -69,8 +69,9 @@ public class BookingFile extends AbstractFile{
         sc.useDelimiter(AbstractFile.getDELIMITER());
         
         while (sc.hasNext()) {
+            bookingid = Integer.parseInt(sc.next());
         	email = sc.next();
-        	id = sc.next();
+        	premiseid = sc.next();
          	try {
          		bookingDate = dateFormatter.parse(sc.next());		
             	checkInDate = dateFormatter.parse(sc.next());
@@ -81,14 +82,13 @@ public class BookingFile extends AbstractFile{
 			}
          	noOfPerson = Integer.parseInt(sc.next());
          	totalAmount = Double.parseDouble(sc.next());
-         	paymentMethod = sc.next();
          	paymentID = sc.next();
-         	payment = new Payment(paymentID, paymentMethod);
+         	payment = new Payment(paymentID);
          	serviceFee = Double.parseDouble(sc.next());
       
         }
        
-        Booking readBooking = new Booking(email, id, bookingDate, checkInDate, checkOutDate, noOfPerson, totalAmount, payment, serviceFee);
+        Booking readBooking = new Booking(bookingid, email, premiseid, bookingDate, checkInDate, checkOutDate, noOfPerson, totalAmount, payment, serviceFee);
         sc.close();
         return readBooking;
 

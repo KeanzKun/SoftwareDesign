@@ -8,7 +8,7 @@ public class AppsController {
 	public void createNewUser() {
 		
 		PersonType personType = InputValidation.readPersonType();
-		String regEmail = InputValidation.readEmali("Email");
+		String regEmail = InputValidation.readEmail("Email");
 		String name = InputValidation.readString("Name");
 		String ic = InputValidation.readString("IC");
 		String homeAddress = InputValidation.readString("Home Address");
@@ -19,8 +19,6 @@ public class AppsController {
 		personList.AddNewPerson(regEmail, name, ic, homeAddress, phoneNo, password, personType);
 		System.out.println("User Added Succesfully!");
 	}
-	
-	
 
 	public Person findPerson(String email,String password) {
 		return personList.getPerson(email, password);

@@ -21,6 +21,7 @@ public class Premises {
 		this.setActive(true);
 	}
 	
+	//not necessary
 	public Premises(String premiseID, String name, String address, String type, int capacity, int numRoom, String regEmail, boolean active) {
 		this.premiseID = premiseID;
 		this.name = name;
@@ -74,6 +75,9 @@ public class Premises {
 	}
 	@Override
 	public String toString() {
-		return this.premiseID + ";" + this.getName() + ";" + this.getAddress() + ";" + this.getType() + ";" + this.getCapacity() + ";" + this.getNumRoom() + ";" + this.getRegEmail() + ";" + this.isActive();
+		return this.premiseID + ";" + this.getName() + ";" 
+			+ this.getAddress() + ";" + this.getType() + ";" 
+			+ this.getCapacity() + ";" + this.getNumRoom() + ";"
+			 + this.getRegEmail() + ";" + this.isActive();
 	}
 }
