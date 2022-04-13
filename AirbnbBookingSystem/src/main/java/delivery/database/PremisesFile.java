@@ -55,14 +55,14 @@ public class PremisesFile extends AbstractFile{
     }
 
     private Premises readPremisesFile(String str) {
-        String premiseID = null, name = null, address = null, type = null, email = null;
-        int capacity = 0, numRoom = 0;
+        String name = null, address = null, type = null, email = null;
+        int capacity = 0, numRoom = 0, premiseID = 0;
         Boolean active = null;
         Scanner sc = new Scanner(str);
         sc.useDelimiter(AbstractFile.getDELIMITER());
         
         while (sc.hasNext()) {
-        	premiseID = sc.next(); 
+        	premiseID = Integer.parseInt(sc.next()); 
         	name = sc.next(); 
         	address = sc.next(); 
         	type = sc.next(); 
