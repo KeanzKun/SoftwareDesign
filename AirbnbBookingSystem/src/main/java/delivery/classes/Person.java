@@ -64,7 +64,7 @@ public class Person {
 	public boolean equals(String regEmail) {
 		boolean sameObject= false;
 		
-		if(this.getRegEmail() == regEmail) {
+		if(this.getRegEmail().equals(regEmail)) {
 			sameObject = true;
 		}
 		return sameObject;
@@ -73,7 +73,7 @@ public class Person {
 	public boolean equals(String regEmail, String password) {
 		boolean sameObject= false;
 		
-		if(this.getRegEmail() == regEmail && this.password == password) {
+		if(this.getRegEmail().equals(regEmail) && this.password.equals(password)) {
 			sameObject = true;
 		}
 		return sameObject;
