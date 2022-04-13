@@ -1,8 +1,12 @@
 package delivery.classes;
 
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import delivery.database.*;
@@ -136,7 +140,7 @@ public class BookingDAO {
 		
 		if(checkBookingHour(checkOut, today))
 		{
-			booking
+			//booking
 		}
 
 		for (Booking bookingValue : bookingList) {
@@ -158,4 +162,32 @@ public class BookingDAO {
 		else
 			return false;
 	}
+	
+	public void parseFile(String fileName,String searchStr) throws FileNotFoundException{
+        Scanner scan = new Scanner(new File(fileName));
+        while(scan.hasNext()){
+            String line = scan.nextLine().toLowerCase().toString();
+            if(line.contains(searchStr)){
+                System.out.println(line);
+            }
+        }
+    }
+
+
+    public static void searchAdmin(String[] args) throws FileNotFoundException{
+    	BookingDAO fileSearch = new BookingDAO();    	
+    	Scanner scanner = new Scanner(System.in);
+
+    	System.out.println("Insert booking keyword to search: ");
+    	String keyword = scanner.nextLine();
+        fileSearch.parseFile("../AirbnbBookingSystem/Booking.txt", (keyword));
+    }
+    public static void main(String[] args) throws FileNotFoundException {
+    	Scanner scanner = new Scanner(System.in);
+    	
+    	BookingDAO fileSearch = new BookingDAO();
+    	System.out.println("Insert booking keyword to search: ");
+    	String keyword = scanner.nextLine();
+        fileSearch.parseFile("../AirbnbBookingSystem/Booking.txt", (keyword));
+    }
 }

@@ -1,9 +1,10 @@
 package delivery.UI;
 
+import java.io.FileNotFoundException;
 import java.util.Scanner;
-
+import delivery.classes.*;
 public class UI {
-
+	Scanner scanner = new Scanner(System.in);
 	//display header
 	public static void header(String heading) {
 		System.out.printf("%n%n");
@@ -17,18 +18,51 @@ public class UI {
 	}
 	
 	public static void displayEnterMainMenu() {
-		
+		System.out.println("Option 1: Login");
+		System.out.println("Option 2: Sign up");
 	}
 	
 	public static void displayUserMainMenu() {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Option 1: Add Booking");
+		System.out.println("Option 2: View Booking");
+		System.out.println("Option 3: Search Booking");
+		System.out.println("Option 4: Update Booking");
+		System.out.println("Option 5: Delete Booking");
+		
+		int input = scanner.nextInt();
 		
 	}
 	
-	public static void displayAdminMainMenu() {
+	public static void displayAdminMainMenu() throws FileNotFoundException {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Option 1: View Booking");
+		System.out.println("Option 2: Search Booking");
+		System.out.println("Option 3: Generate Sales Report");
+		int input = scanner.nextInt();
 		
+		switch(input) {
+			case 1:break;
+			case 2:
+				BookingDAO fileSearch = new BookingDAO();
+		    	System.out.println("Insert booking keyword to search: ");
+		    	String keyword = scanner.nextLine();
+		        fileSearch.parseFile("../AirbnbBookingSystem/Booking.txt", (keyword));
+				break;
+			case 3:break;
+			default: System.out.println("Invalid input try again");
+				break;
+		}
+			
+			
 	}
 
 	public static void displayHostMainMenu() {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Option 1: View Booking");
+		System.out.println("Option 2: Search Booking");
+		System.out.println("Option 3: Generate Sales Report");
+		int input = scanner.nextInt();
 		
 	}
 	
