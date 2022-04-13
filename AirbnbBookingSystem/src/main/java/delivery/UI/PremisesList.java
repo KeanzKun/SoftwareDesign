@@ -13,9 +13,9 @@ public class PremisesList {
 	ArrayList<Premises> premiseList = file.retrieve();
 	public void AddNewPremise(Person activePerson, String name, String address, String type, int capacity,
 			int numRoom) {
-		int newPremiseID = getNewPremiseID();
+		
 		if(activePerson.getPersonType() == PersonType.Host) {
-			Premises newPremise = new Premises(newPremiseID, name, address, type, capacity, numRoom, activePerson.getRegEmail());
+			Premises newPremise = new Premises(getNewPremiseID(), name, address, type, capacity, numRoom, activePerson.getRegEmail());
 			premiseList.add(newPremise);
 		}
 	}
