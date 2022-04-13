@@ -3,8 +3,9 @@ package delivery.classes;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,57 +14,32 @@ import delivery.database.*;
 
 public class BookingDAO {
 
-	ArrayList<Booking> bookingList = new ArrayList<Booking>();
+	static ArrayList<Booking> bookingList = new ArrayList<Booking>();
 	Scanner scanner = new Scanner(System.in);
-	SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
+	static SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
 
-	public void viewBooking(Booking booking) throws Exception {
+	public static void viewBooking(Booking booking) throws Exception {
 		BookingFile BF = new BookingFile();
-
 		bookingList = BF.retrieve();
-
-		String checkInDate = "2022-10-21";
-		String checkOutDate = "2022-10-22";
-		String todate = "2022-10-20";
-
-		Date checkIn = ft.parse(checkInDate);
-		Date checkOut = ft.parse(checkOutDate);
-		Date today = ft.parse(todate);
-
-		Payment pay1 = new Payment("P001", "Card");
-		Booking bookingDummy = new Booking("kean@gmail.com", "001", today, checkIn, checkOut, 3, 120.60, pay1, 20.60);
-		Booking book1 = new Booking("kean@gmail.com", "001", today, checkIn, checkOut, 3, 120.60, pay1, 20.60);
-		Booking book2 = new Booking("koonqi@gmail.com", "001", today, checkIn, checkOut, 3, 120.60, pay1, 20.60);
-		Booking book3 = new Booking("siowyen@gmail.com", "001", today, checkIn, checkOut, 3, 120.60, pay1, 20.60);
-		Booking book4 = new Booking("jorian@gmail.com", "001", today, checkIn, checkOut, 3, 120.60, pay1, 20.60);
-		Booking book5 = new Booking("shawn@gmail.com", "001", today, checkIn, checkOut, 3, 120.60, pay1, 20.60);
-
-		bookingList.add(book1);
-		bookingList.add(book2);
-		bookingList.add(book3);
-		bookingList.add(book4);
-		bookingList.add(book5);
 
 		for (Booking bookingValue : bookingList) {
 
-			if (bookingValue.equals(bookingDummy)) {
+			if (bookingValue.equals(booking)) {
 				bookingValue.toString();
 			}
 		}
-
 	}
 
 	public void updateBooking(Booking booking) throws Exception {
-		// check in, check out, numPeople
+		// check in & check out, numPeople
 
 		int choice = 0;
 		String dateInput;
 
 		System.out.println("Update Booking Details");
 		System.out.println("======================");
-		System.out.println("1. Check-In Date Update");
-		System.out.println("2. Check-Out Date Update");
-		System.out.println("3. Number of People Update");
+		System.out.println("1. Check-In Date & Check-Out Date");
+		System.out.println("2. Number of People Update");
 		System.out.println("0. Back");
 		System.out.print("Enter choice to update:");
 		choice = scanner.nextInt();
@@ -75,32 +51,32 @@ public class BookingDAO {
 				dateInput = scanner.nextLine();
 				Date newCheckIn = ft.parse(dateInput);
 
-				booking.setCheckInDate(newCheckIn);
+				System.out.print("Enter new Check-Out Date: ");
+				dateInput = scanner.nextLine();
+				Date newCheckOut = ft.parse(dateInput);
 
-				if (newCheckIn != null) {
-					System.out.print("\n\nCheck-In Date has updated.");
+				// check for availability on new dates
+				if (checkAvailability(booking.getBookingID(), booking.getPremiseID(), newCheckIn, newCheckOut)) {
+
+					// check if check in is before check out
+					if (newCheckIn.compareTo(newCheckOut) < 0) {
+						booking.setCheckInDate(newCheckIn);
+						booking.setCheckOutDate(newCheckOut);
+
+						System.out.print("\n\nCheck-In & Check-Out date has been updated.");
+
+					} else {
+						System.out.print("\n\nCheck-In date must be before Check-Out date. ");
+
+					}
 				} else {
-					System.out.print("\n\nUpdate unsuccessful.");
+					System.out.print("\n\nThere are existing booking during the input dates.");
+
 				}
 
 				break;
 
 			case 2:
-				System.out.print("Enter new Check-Out Date: ");
-				dateInput = scanner.nextLine();
-				Date newCheckOut = ft.parse(dateInput);
-
-				booking.setCheckOutDate(newCheckOut);
-
-				if (newCheckOut != null) {
-					System.out.print("\n\nCheck-Out Date has updated.");
-				} else {
-					System.out.print("\n\nUpdate unsuccessful.");
-				}
-
-				break;
-
-			case 3:
 				System.out.print("Enter new Number of People: ");
 				int newNum = scanner.nextInt();
 				scanner.nextLine();
@@ -122,45 +98,56 @@ public class BookingDAO {
 
 	}
 
-	public void cancelBooking(Booking booking) throws Exception {
+	public static void cancelBooking(Booking booking) throws Exception {
 
-		String checkInDate = "2022-10-21";
-		String checkOutDate = "2022-10-22";
-		String todate = "2022-10-20";
+		LocalDate lt = LocalDate.now();
+		String todate = lt.toString();
 
-		Date checkIn = ft.parse(checkInDate);
-		Date checkOut = ft.parse(checkOutDate);
+		System.out.println("Test todate to String: " + todate);
 		Date today = ft.parse(todate);
 
-		checkIn.setHours(13);
-		
-		Payment pay1 = new Payment("P001", "Card");
-		Booking bookingDummy = new Booking("kean@gmail.com", "001", today, checkIn, checkOut, 3, 120.60, pay1, 20.60);
-		
-		
-		if(checkBookingHour(checkOut, today))
-		{
-			//booking
+		if (checkBookingHour(booking.getCheckInDate(), today )) {
+			booking.cancelBooking();
+		} else {
+			System.out.println("Can't cancel within 24 hours");
 		}
 
-		for (Booking bookingValue : bookingList) {
-
-			if (bookingValue.equals(bookingDummy)) {
-				
-			}
-		}
 	}
 
-	public boolean checkBookingHour(Date checkOut, Date today)
-	{
+	public boolean checkBookingHour(Date checkOut, Date today) {
 		long difference = checkOut.getTime() - today.getTime();
-        long differenceInHours = (difference/ (1000 * 60 * 60)) % 24;
+		long differenceInHours = (difference / (1000 * 60 * 60)) % 24;
 
-		if(differenceInHours >= 24){
+		if (differenceInHours >= 24) {
 			return true;
-		}
-		else
+		} else
 			return false;
+	}
+
+	public boolean checkAvailability(int bookingID, String premiseID, Date checkIn, Date checkOut) throws Exception {
+
+		boolean status = false;
+		BookingFile BF = new BookingFile();
+		bookingList = BF.retrieve();
+
+		// go through all bookings
+		for (Booking booking : bookingList) {
+			// match the same premise that is not current booking
+			if (premiseID.equals(booking.getPremiseID()) && bookingID != booking.getBookingID()) {
+				// check if check in date got clash
+				int compareStart1 = checkIn.compareTo(booking.getCheckInDate());
+				int compareEnd1 = checkIn.compareTo(booking.getCheckOutDate());
+				// check if check out date got clash
+				int compareStart2 = checkOut.compareTo(booking.getCheckInDate());
+				int compareEnd2 = checkOut.compareTo(booking.getCheckOutDate());
+				// if no clash return true
+				if (compareStart1 <= 0 && compareEnd1 >= 0 && compareStart2 <= 0 && compareEnd2 >= 0) {
+					status = true;
+				}
+			}
+		}
+
+		return status;
 	}
 	
 	public void parseFile(String fileName,String searchStr) throws FileNotFoundException{
@@ -182,12 +169,33 @@ public class BookingDAO {
     	String keyword = scanner.nextLine();
         fileSearch.parseFile("../AirbnbBookingSystem/Booking.txt", (keyword));
     }
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws Exception {
     	Scanner scanner = new Scanner(System.in);
-    	
+		LocalDate lt = LocalDate.now();
+
+		String checkInDate = "2022-10-21";
+		String checkOutDate = "2022-10-22";
+		String todate = lt.toString();
+		
+		Date checkIn = ft.parse(checkInDate);
+		Date checkOut = ft.parse(checkOutDate);
+		Date today = ft.parse(todate);
+
+    	Payment pay1 = new Payment("P001");
+		Booking bookingDummy = new Booking(100006, "kean@gmail.com", "001", 
+			today, checkIn, checkOut, 3, 120.60, pay1, 20.60);
+
     	BookingDAO fileSearch = new BookingDAO();
     	System.out.println("Insert booking keyword to search: ");
     	String keyword = scanner.nextLine();
         fileSearch.parseFile("../AirbnbBookingSystem/Booking.txt", (keyword));
+
+		System.out.println("===============================================VIEW BOOKING");
+		viewBooking(bookingDummy);
+		System.out.println("===============================================VIEW BOOKING");
+		System.out.println("===============================================CANCEL BOOKING");
+		cancelBooking(bookingDummy);
+		System.out.println("===============================================CANCEL BOOKING");
     }
 }
+
