@@ -8,12 +8,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
+import delivery.UI.UI;
 import delivery.database.*;
 
 public class BookingDAO {
 
 	static ArrayList<Booking> bookingList = new ArrayList<Booking>();
-	
+
 	static Scanner scanner = new Scanner(System.in);
 	static SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -34,17 +35,10 @@ public class BookingDAO {
 	public static void updateBooking(Booking booking) throws Exception {
 		// check in & check out, numPeople
 
-		int choice = 0;
-		String dateInput;
+		UI ui = new UI();
 
-		System.out.println("Update Booking Details");
-		System.out.println("======================");
-		System.out.println("1. Check-In Date & Check-Out Date");
-		System.out.println("2. Number of People Update");
-		System.out.println("0. Back");
-		System.out.print("Enter choice to update:");
-		choice = scanner.nextInt();
-		scanner.nextLine();
+		int choice = ui.displayUpdateMenu();
+		String dateInput;
 
 		switch (choice) {
 			case 1:
@@ -103,11 +97,11 @@ public class BookingDAO {
 
 		if (checkBookingHour(booking.getCheckInDate())) {
 			booking.cancelBooking();
-			
-			if(!booking.getStatus()) {
+
+			if (!booking.getStatus()) {
 				System.out.println("Booking cancelled");
 			}
-			
+
 		} else {
 			System.out.println("Can't cancel within 24 hours");
 		}
@@ -119,14 +113,15 @@ public class BookingDAO {
 
 		long difference = checkIn.getTime() - today.getTime();
 		long differenceInHours = (difference / 3600000);
-		
+
 		if (differenceInHours >= 24) {
 			return true;
 		} else
 			return false;
 	}
 
-	public static boolean checkAvailability(int bookingID, String premiseID, Date checkIn, Date checkOut) throws Exception {
+	public static boolean checkAvailability(int bookingID, String premiseID, Date checkIn, Date checkOut)
+			throws Exception {
 
 		boolean status = false;
 		BookingFile BF = new BookingFile();
@@ -151,7 +146,7 @@ public class BookingDAO {
 					if (compareStart2 < 0 || compareEnd2 > 0) {
 						System.out.println("5");
 						status = true;
-					}	
+					}
 				}
 			}
 		}
@@ -176,34 +171,5 @@ public class BookingDAO {
 		System.out.println("Insert booking keyword to search: ");
 		String keyword = scanner.nextLine();
 		fileSearch.parseFile("../AirbnbBookingSystem/Booking.txt", (keyword));
-	}
-
-	public static void main(String[] args) throws Exception {
-		Scanner scanner = new Scanner(System.in);
-		LocalDate lt = LocalDate.now();
-
-		String checkInDate = "2022-10-21";
-		String checkOutDate = "2022-10-22";
-		String todate = lt.toString();
-
-		Date checkIn = ft.parse(checkInDate);
-		Date checkOut = ft.parse(checkOutDate);
-		Date today = ft.parse(todate);
-
-		Payment pay1 = new Payment("P001");
-		Booking bookingDummy = new Booking(100006, "kean@gmail.com", "001",
-				today, checkIn, checkOut, 3, 120.60, pay1, 20.60);
-
-		BookingDAO fileSearch = new BookingDAO();
-		System.out.println("Insert booking keyword to search: ");
-		String keyword = scanner.nextLine();
-		fileSearch.parseFile("../AirbnbBookingSystem/Booking.txt", (keyword));
-
-		System.out.println("===============================================VIEW BOOKING");
-		viewBooking(bookingDummy);
-		System.out.println("===============================================VIEW BOOKING");
-		System.out.println("===============================================CANCEL BOOKING");
-		cancelBooking(bookingDummy);
-		System.out.println("===============================================CANCEL BOOKING");
 	}
 }
