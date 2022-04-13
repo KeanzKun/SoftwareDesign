@@ -13,7 +13,11 @@ public class Booking {
 	private Payment payment;
 	private double serviceFee;
 	
-	public Booking(String regEmail, String premiseID, Date bookingDate, Date checkInDate, Date checkOutDate, int noOfPerson, double totalAmount, Payment payment, double serviceFee) {
+	public Booking(String regEmail, String premiseID, 
+		Date bookingDate, Date checkInDate, Date checkOutDate, 
+		int noOfPerson, double totalAmount, Payment payment, 
+		double serviceFee) {
+
 		this.regEmail = regEmail;
 		this.premiseID = premiseID;
 		this.bookingDate = bookingDate;
