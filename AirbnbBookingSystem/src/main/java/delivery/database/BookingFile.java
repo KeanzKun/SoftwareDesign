@@ -64,7 +64,7 @@ public class BookingFile extends AbstractFile{
         int noOfPerson = 0, bookingid = 0;
         double totalAmount = 0, serviceFee = 0;
         Payment payment = null;
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-mm-dd");
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
         Scanner sc = new Scanner(str);
         sc.useDelimiter(AbstractFile.getDELIMITER());
         
@@ -90,9 +90,8 @@ public class BookingFile extends AbstractFile{
        
         Booking readBooking = new Booking(bookingid, email, premiseid, bookingDate, checkInDate, checkOutDate, noOfPerson, totalAmount, payment, serviceFee);
         sc.close();
-        return readBooking;
-
         
+        return readBooking;    
     }
     
 }

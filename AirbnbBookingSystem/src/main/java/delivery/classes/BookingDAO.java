@@ -13,22 +13,24 @@ import delivery.database.*;
 public class BookingDAO {
 
 	static ArrayList<Booking> bookingList = new ArrayList<Booking>();
-	Scanner scanner = new Scanner(System.in);
+	
+	static Scanner scanner = new Scanner(System.in);
 	static SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
 
 	public static void viewBooking(Booking booking) throws Exception {
-		BookingFile BF = new BookingFile();
-		bookingList = BF.retrieve();
-
-		for (Booking bookingValue : bookingList) {
-
-			if (bookingValue.equals(booking)) {
-				bookingValue.toString();
-			}
-		}
+		System.out.println("Booking ID: " + booking.getBookingID());
+		System.out.println("Email: " + booking.getRegEmail());
+		System.out.println("Premise ID: " + booking.getPremiseID());
+		System.out.println("Booking Date: " + ft.format(booking.getBookingDate()));
+		System.out.println("Check In Date " + ft.format(booking.getCheckInDate()));
+		System.out.println("Check Out Date: " + ft.format(booking.getCheckOutDate()));
+		System.out.println("No Of Person: " + booking.getNoOfPerson());
+		System.out.println("Total Amount: " + booking.getTotalAmount());
+		System.out.println("Payment: " + booking.getPayment());
+		System.out.println("Service Fee: " + booking.getServiceFee());
 	}
 
-	public void updateBooking(Booking booking) throws Exception {
+	public static void updateBooking(Booking booking) throws Exception {
 		// check in & check out, numPeople
 
 		int choice = 0;
@@ -122,7 +124,7 @@ public class BookingDAO {
 			return false;
 	}
 
-	public boolean checkAvailability(int bookingID, String premiseID, Date checkIn, Date checkOut) throws Exception {
+	public static boolean checkAvailability(int bookingID, String premiseID, Date checkIn, Date checkOut) throws Exception {
 
 		boolean status = false;
 		BookingFile BF = new BookingFile();
@@ -131,16 +133,23 @@ public class BookingDAO {
 		// go through all bookings
 		for (Booking booking : bookingList) {
 			// match the same premise that is not current booking
-			if (premiseID.equals(booking.getPremiseID()) && bookingID != booking.getBookingID()) {
+			if (premiseID.equals("001") && bookingID != booking.getBookingID()) {
+				System.out.println("1");
 				// check if check in date got clash
 				int compareStart1 = checkIn.compareTo(booking.getCheckInDate());
 				int compareEnd1 = checkIn.compareTo(booking.getCheckOutDate());
+				System.out.println("2");
 				// check if check out date got clash
 				int compareStart2 = checkOut.compareTo(booking.getCheckInDate());
 				int compareEnd2 = checkOut.compareTo(booking.getCheckOutDate());
+				System.out.println("3");
 				// if no clash return true
-				if (compareStart1 <= 0 && compareEnd1 >= 0 && compareStart2 <= 0 && compareEnd2 >= 0) {
-					status = true;
+				if (compareStart1 < 0 || compareEnd1 > 0) {
+					System.out.println("4");
+					if (compareStart2 < 0 || compareEnd2 > 0) {
+						System.out.println("5");
+						status = true;
+					}	
 				}
 			}
 		}
@@ -169,6 +178,9 @@ public class BookingDAO {
     }
 	
     public static void main(String[] args) throws Exception {
+    	BookingFile BF = new BookingFile();
+    	bookingList = BF.retrieve();
+    	
     	Scanner scanner = new Scanner(System.in);
 		LocalDate lt = LocalDate.now();
 
@@ -181,20 +193,19 @@ public class BookingDAO {
 		Date today = ft.parse(todate);
 
     	Payment pay1 = new Payment("P001");
-		Booking bookingDummy = new Booking(100006, "kean@gmail.com", "001", 
-			today, checkIn, checkOut, 3, 120.60, pay1, 20.60);
+		Booking bookingDummy = new Booking(100006, "kean@gmail.com", "001", today, checkIn, checkOut, 3, 120.60, pay1, 20.60);
 
-    	BookingDAO fileSearch = new BookingDAO();
-    	System.out.println("Insert booking keyword to search: ");
-    	String keyword = scanner.nextLine();
-        fileSearch.parseFile("../AirbnbBookingSystem/Booking.txt", (keyword));
+//    	BookingDAO fileSearch = new BookingDAO();
+//    	System.out.println("Insert booking keyword to search: ");
+//    	String keyword = scanner.nextLine();
+//        fileSearch.parseFile("../AirbnbBookingSystem/Booking.txt", (keyword));
 
 		System.out.println("===============================================VIEW BOOKING");
 		viewBooking(bookingDummy);
-		System.out.println("===============================================VIEW BOOKING");
-		System.out.println("===============================================CANCEL BOOKING");
-		cancelBooking(bookingDummy);
-		System.out.println("===============================================CANCEL BOOKING");
+		System.out.println("\n===============================================UPDATE BOOKING");
+		updateBooking(bookingDummy);
+		System.out.println("\n===============================================VIEW BOOKING");
+		viewBooking(bookingDummy);
     }
 }
 
