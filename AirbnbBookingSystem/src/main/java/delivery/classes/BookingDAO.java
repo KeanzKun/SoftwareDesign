@@ -103,7 +103,11 @@ public class BookingDAO {
 
 		if (checkBookingHour(booking.getCheckInDate())) {
 			booking.cancelBooking();
-			System.out.println(booking.getStatus());
+			
+			if(!booking.getStatus()) {
+				System.out.println("Booking cancelled");
+			}
+			
 		} else {
 			System.out.println("Can't cancel within 24 hours");
 		}
