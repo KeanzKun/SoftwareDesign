@@ -1,3 +1,9 @@
 koonqi1996@gmail.com;koonqi;960225105136;puchong;0167222654;koonqi;User;ABC
 test@test.my;test;123456789;test;0123456789;test;User;ABC
 siowyen111@gmail.com;SY;123456;Jalan;0123333333;123;User;ABC
+admin@airbnb.com;admin;122112454555;Jalan;666666;admin;Admin;4567489
+poker01@gmail.com;Poker Lee;880121073121;D1-2-2, Cypress Condo;0123434353;pokerface123;Host;8888111144440001;
+ghost02@gmail.com;Justin Bibi;940311075345;7, Jln Suga 1, Tmn Holy;0123434353;justin123;Host;8888111144440002;
+jojo333@gmail.com;Jojo Diodio;890415073153;4, Jln Coco, Tmn Sai;0129808086;mudamuda12;Host;8888111144440003;
+sasuke@gmail.com;Uchiha Sasuke;990430038803;9, Jln Uchiha, Tmn Uchiha;0123434353;sharingan012;Host;8888111144440004;
+naruto@gmail.com;Uzumaki Naruto;990121038085;A1-10-1, Hokage Condo;0123434300;kurama999;Host;8888111144440005;

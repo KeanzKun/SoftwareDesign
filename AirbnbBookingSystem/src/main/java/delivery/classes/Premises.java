@@ -65,6 +65,7 @@ public class Premises {
 	public double getPrice() {
 		return this.price;
 	}
+
 	public boolean isActive() {
 		return active;
 	}
@@ -72,7 +73,11 @@ public class Premises {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
-
+	
+	public boolean getActive() {
+		return active;
+	}
+	
 	public boolean equals(int premiseID) {
 		boolean isEqual = false;
 		

@@ -4,11 +4,12 @@ import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.util.Scanner;
 import delivery.classes.*;
+import delivery.database.PersonFile;
 
 public class UI {
 	Scanner scanner = new Scanner(System.in);
 	static AppsController ac = new AppsController();
-
+	static Boolean exit = false;
 	//login UI
 	public static Person login() {
 		Person loginUserDetail = null;
@@ -16,9 +17,9 @@ public class UI {
 		int loginOption = 0;
 		
 		do {
-			UI.header("Welcome to the Airbnb Booking System");
-			UI.displayEnterMainMenu();
-			loginOption = UI.askEventNo(1, 2);
+			header("Welcome to the Airbnb Booking System");
+			displayEnterMainMenu();
+			loginOption = askEventNo(1, 2);
 			if(loginOption == 1) {
 				String email = InputValidation.readString("Email");
 				String password = InputValidation.readString("Password");
@@ -31,7 +32,7 @@ public class UI {
 				}
 			}
 			else if(loginOption == 2) {
-				UI.header("Sign Up");
+				header("Sign Up");
 				System.out.println("Enter New Details:");
 				ac.createNewUser();
 			}
@@ -61,21 +62,31 @@ public class UI {
 
 	public static void displayUserMainMenu(Person usingPerson) throws Exception {
 		Scanner scanner = new Scanner(System.in);
-		System.out.println("Option 1: Add Booking");
-		System.out.println("Option 2: Search Booking");
-
+		
 		BookingDAO bd = new BookingDAO();
+		
 
-		switch (ac.getMenuInput()) {
-			case 1:
-				bd.createBooking(usingPerson.getRegEmail());
-				break;
+		do {
+			System.out.println("Option 1: Add Booking");
+			System.out.println("Option 2: Search Booking");
+			System.out.println("Option 0: Exit");
+			switch (ac.getMenuInput()) {
+				case 1:
+					bd.createBooking(usingPerson.getRegEmail());
+					break;
 
-			case 2:
-				// bd.searchAdmin(args);
-				//displaySearchMenu(booking);
-				break;
-		}
+				case 2:
+					System.out.println("Enter year to search:");
+					int year = scanner.nextInt();
+					scanner.nextLine();
+					Booking selected = bd.searchBookingUser(year, usingPerson.getRegEmail());
+					displaySearchMenu(selected);
+					break;
+				case 0:
+					exit = true;
+					break;
+			}
+		} while(!exit);
 	}
 
 	public static void displaySearchMenu(Booking booking) throws Exception {
@@ -114,54 +125,96 @@ public class UI {
 		return ac.getMenuInput();
 	}
 
-	public static void displayAdminMainMenu(Person usingPerson) throws FileNotFoundException {
+	public static void displayAdminMainMenu(Person usingPerson) throws Exception {
 		Scanner scanner = new Scanner(System.in);
-		System.out.println("Option 1: Generate Sales Report");
-		System.out.println("Option 2: Search Booking");
-
-		switch (ac.getMenuInput()) {
-			case 1:
-				break;
-
-			case 2:
-				BookingDAO fileSearch = new BookingDAO();
-				System.out.println("Insert booking keyword to search: ");
-				String keyword = scanner.nextLine();
-				fileSearch.parseFile("../AirbnbBookingSystem/Booking.txt", (keyword));
-				break;
-
-			default:
-				System.out.println("Invalid input try again");
-				break;
-		}
+		String email;
+		boolean check = false;
+		do {
+			PersonFile personArr = new PersonFile();
+			System.out.println("Option 1: Generate Sales Report");
+			System.out.println("Option 2: Search Booking");
+			System.out.println("Option 0: Exit");
+			switch (ac.getMenuInput()) {
+				case 1:
+					
+				do{
+				System.out.println("Please enter email you want to search, enter q to Quit");
+				email= scanner.nextLine();
+				
+				for(Person personValue : personArr.retrieve())
+				{
+					if(personValue.getRegEmail().equals(email))
+					{
+						check = true;
+					}
+				}
+				if(!check && !email.equals("q"))
+				{
+					System.out.println("Email Not found.");
+				}
+				else if(email.equals("q")) {
+					System.out.println("Quitting...");
+					break;
+				}
+					
+				}while(!check && !email.equals("q"));
+					
+					GenerateSalesReport gsrAdmin = new GenerateSalesReport(email);
+					gsrAdmin.printReport(email);
+					break;
+	
+				case 2:
+					BookingDAO fileSearch = new BookingDAO();
+					System.out.println("Insert booking keyword to search: ");
+					String keyword = scanner.nextLine();
+					fileSearch.parseFile("../AirbnbBookingSystem/Booking.txt", (keyword));
+					break;
+				
+				case 0: 
+					exit = true;
+					break;
+				default:
+					System.out.println("Invalid input try again");
+					break;
+			}
+		} while(!exit);
+		
 
 	}
 
-	public static void displayHostMainMenu(Person usingPerson) {
+	public static void displayHostMainMenu(Person usingPerson) throws Exception {
 		Scanner scanner = new Scanner(System.in);
-		System.out.println("Option 1: Search Booking");
-		System.out.println("Option 2: Generate Sales Report");
-		System.out.println("Option 3: Add Premise");
+		BookingDAO bd = new BookingDAO();
 		
+		do {
+			System.out.println("Option 1: Search Booking");
+			System.out.println("Option 2: Generate Sales Report");
+			System.out.println("Option 3: Add Premise");
+			System.out.println("Option 0: Exit");
 		switch (ac.getMenuInput()) {
 			case 1:
+				bd.searchBookingHost(usingPerson.getRegEmail());
+				//bd.viewBooking(selected);
+
 				break;
 
 			case 2:
-				BookingDAO fileSearch = new BookingDAO();
-				System.out.println("Insert booking keyword to search: ");
-				String keyword = scanner.nextLine();
-				//fileSearch.parseFile("../AirbnbBookingSystem/Booking.txt", (keyword));
+				GenerateSalesReport gsr = new GenerateSalesReport(usingPerson.getRegEmail());
+				gsr.printReport(usingPerson.getRegEmail());
+				
 				break;
 				
 			case 3:
 				ac.createNewPremises(usingPerson);
 				break;
 
+			case 0:
+				exit = true;
 			default:
 				System.out.println("Invalid input try again");
 				break;
 		}
+		}while(!exit);
 	}
 
 	public static int askEventNo(int beginEventNo, int endEventNo) {

@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
-import delivery.UI.UI;
+import delivery.UI.*;
 import delivery.database.*;
 
 public class BookingDAO {
@@ -20,10 +20,13 @@ public class BookingDAO {
 
 	static SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
 
+	BookingFile bf = new BookingFile();
+
 	public void createBooking(String email) throws Exception {
 		ArrayList<Booking> bookingList = new ArrayList<Booking>();
-		BookingFile bf = new BookingFile();
+		
 		bookingList = bf.retrieve();
+		PremisesList pl = new PremisesList();
 
 		Scanner input = new Scanner(System.in);
 		String userInput;
@@ -32,6 +35,7 @@ public class BookingDAO {
 		double totalAmount, serviceFee;
 		String checkInInput, checkOutInput;
 		Date checkInDate, checkOutDate;
+		Date today = new Date();
 
 		SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -39,9 +43,30 @@ public class BookingDAO {
 		bookingID = bookingList.size() + 100001;
 
 		// prompt permiseID
-		System.out.print("Select permise:");
-		premiseID = input.nextInt();
-		input.nextLine();
+		System.out.println("Select permise:");
+		Premises p = pl.selectPremiseList();
+
+		if (p == null){
+			System.out.println("Please select a premise.");
+			return;
+		}
+		
+		premiseID = p.getPremiseID();
+		
+		double price = 0;
+
+		ArrayList<Premises> premiseList = new ArrayList<Premises>();
+		for (Premises premise : premiseList) {
+			if (premise.equals(premiseID)) {
+				if (premise.getActive()){
+					price = premise.getPrice();
+				} else{
+					System.out.println("Premise is not available to book.");
+					return;
+				}
+				
+			}
+		} 
 		// System.out.println("permiseID: " + permiseID);
 
 		// prompt check-in-date
@@ -58,15 +83,20 @@ public class BookingDAO {
 		checkOutDate = ft.parse(checkOutInput);
 		// System.out.println("check out date: " + checkOutDate);
 
+		if (checkInDate.compareTo(today) < 0) {
+			System.out.println("\n\nCheck-In date must be after today. ");
+			return;
+		}
+
 		// check if check in is before check out
 		if (!(checkInDate.compareTo(checkOutDate) < 0)) {
-			System.out.print("\n\nCheck-In date must be before Check-Out date. ");
+			System.out.println("\n\nCheck-In date must be before Check-Out date. ");
 			return;
 		}
 
 		// check for availability on dates
 		if (!checkAvailability(bookingID, premiseID, checkInDate, checkOutDate)) {
-			System.out.print("\n\nThere are existing booking during the input dates.");
+			System.out.println("\n\nThere are existing booking during the input dates.");
 			return;
 		}
 
@@ -74,24 +104,17 @@ public class BookingDAO {
 		System.out.print("Enter number of person:");
 		userInput = input.nextLine();
 		noOfPerson = Integer.parseInt(userInput);
+		if(noOfPerson > p.getCapacity()){
+			System.out.println("Number of People is more than the premise capacity.");
+			return;
+		}
+
 		// System.out.println("Number of person: " + noOfPerson);
 
-		int days = calculateDays(checkInDate, checkOutDate);
-		System.out.print(days);
-
-		double price = 0;
-
-		ArrayList<Premises> premiseList = new ArrayList<Premises>();
-		for (Premises premise : premiseList) {
-			if (premise.equals(premiseID)) {
-				price = premise.getPrice();
-			}
-		}
+		int days = calculateDays(checkInDate, checkOutDate);		
 
 		totalAmount = price * days;
 		serviceFee = totalAmount * 0.05;
-
-		Date today = new Date();
 
 		Booking newBooking = new Booking(bookingID, email, premiseID, today, checkInDate, checkOutDate, noOfPerson,
 				totalAmount, serviceFee);
@@ -114,8 +137,7 @@ public class BookingDAO {
 		System.out.println("Check Out Date: " + ft.format(booking.getCheckOutDate()));
 		System.out.println("No Of Person: " + booking.getNoOfPerson());
 		System.out.println("Total Amount: " + booking.getTotalAmount());
-		System.out.println("Service Fee: " + booking.getServiceFee());
-		System.out.println("Service Fee: " + booking.getStatus());
+		//System.out.println("Service Fee: " + booking.getServiceFee());
 	}
 
 	public static void updateBooking(Booking booking) throws Exception {
@@ -143,13 +165,13 @@ public class BookingDAO {
 				if (checkAvailability(booking.getBookingID(), booking.getPremiseID(), newCheckIn, newCheckOut)) {
 					booking.setCheckInDate(newCheckIn);
 					booking.setCheckOutDate(newCheckOut);
-					System.out.print("\n\nCheck-In & Check-Out date has been updated.");
+					System.out.println("\n\nCheck-In & Check-Out date has been updated.");
 				} else {
-					System.out.print("\n\nThere are existing booking during the input dates.");
+					System.out.println("\n\nThere are existing booking during the input dates.");
 					return;
 				}
 			} else {
-				System.out.print("\n\nCheck-In date must be before Check-Out date. ");
+				System.out.println("\n\nCheck-In date must be before Check-Out date. ");
 				return;
 			}
 			break;
@@ -254,6 +276,34 @@ public class BookingDAO {
 		}
 	}
 
+	public Booking searchBookingUser(int year, String email) throws Exception{
+		bookingList = bf.retrieve();
+		ArrayList<Booking> searchList = new ArrayList<Booking>();
+		Booking selectedBooking;
+
+		for(Booking booking:bookingList){
+			if(booking.getCheckInDate().getYear() == year && booking.getRegEmail().equals(email)){
+				searchList.add(booking);
+			}
+		}
+
+		int i = 1;
+
+		for(Booking search:searchList){
+			System.out.println("Option " + i); 
+			System.out.println("========================="); 
+			viewBooking(search);
+			i++;
+		}
+
+		System.out.println("Select booking: ");
+		int choice = scanner.nextInt() - 1;
+		scanner.nextLine();
+		selectedBooking =  searchList.get(choice);	
+
+		return selectedBooking;
+	}
+
 	public static void searchAdmin(String[] args) throws FileNotFoundException {
 		BookingDAO fileSearch = new BookingDAO();
 		Scanner scanner = new Scanner(System.in);
@@ -263,42 +313,32 @@ public class BookingDAO {
 		fileSearch.parseFile("../AirbnbBookingSystem/Booking.txt", (keyword));
 	}
 
-	private Booking searchBooking(String str, String dateMonth) {
-		// System.out.println("hey"+str);
-		String email = null;
-		Date bookingDate = null, checkInDate = null, checkOutDate = null;
-		int noOfPerson = 0, bookingid = 0, premiseid = 0;
-		double totalAmount = 0, serviceFee = 0;
-		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-		Scanner sc = new Scanner(str);
-		sc.useDelimiter(AbstractFile.getDELIMITER());
+	public void searchBookingHost(String email) throws Exception{
+		PremisesList pl = new PremisesList();
+		Premises p = pl.selectPremise(email);
+		
+		bookingList = bf.retrieve();
+		ArrayList<Booking> searchList = new ArrayList<Booking>();
+		Booking selectedBooking;
 
-		Booking readBooking = null;
-		while (sc.hasNext()) {
-			bookingid = Integer.parseInt(sc.next());
-			email = sc.next();
-			premiseid = Integer.parseInt(sc.next());
-			try {
-				bookingDate = dateFormatter.parse(sc.next());
-				checkInDate = dateFormatter.parse(sc.next());
-
-				checkOutDate = dateFormatter.parse(sc.next());
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		for(Booking booking:bookingList){
+			if(booking.getPremiseID() == p.getPremiseID()){
+				searchList.add(booking);
 			}
-			noOfPerson = Integer.parseInt(sc.next());
-			totalAmount = Double.parseDouble(sc.next());
-			serviceFee = Double.parseDouble(sc.next());
-
-		}
-		if (checkInDate.getMonth() + 1 == Integer.parseInt(dateMonth)) {
-			readBooking = new Booking(bookingid, email, premiseid, bookingDate, checkInDate, checkOutDate, noOfPerson,
-					totalAmount, serviceFee);
 		}
 
-		sc.close();
+		int i = 1;
 
-		return readBooking;
+		for(Booking search:searchList){
+			System.out.println("Option " + i); 
+			viewBooking(search);
+		}
+
+		// System.out.println("Select booking: ");
+		// int choice = scanner.nextInt() - 1;
+		// scanner.nextLine();
+		// selectedBooking =  searchList.get(choice);	
+
+		// return selectedBooking;
 	}
 }

@@ -102,7 +102,7 @@ public class Booking {
 		return status;
 	}
 	@Override
-	public String toString() {
+	public String toString() {		
 		String bookingDate = dateToString(this.getBookingDate());
 		String checkInDate = dateToString(this.getCheckInDate());
 		String checkOutDate = dateToString(this.getCheckOutDate());
