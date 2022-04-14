@@ -7,7 +7,7 @@ import delivery.classes.*;
 
 public class BookingApps {
 	
-	public static void main(String[] args) throws FileNotFoundException, ParseException {
+	public static void main(String[] args) throws Exception {
 		int select = 1;
 		boolean exit = false;
 		Person entryPerson = UI.login();

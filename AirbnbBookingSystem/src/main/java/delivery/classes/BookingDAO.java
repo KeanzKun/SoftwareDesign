@@ -19,97 +19,90 @@ public class BookingDAO {
 	static Scanner scanner = new Scanner(System.in);
 
 	static SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
-	
-	public void createBooking() throws Exception {
+
+	public void createBooking(String email) throws Exception {
 		ArrayList<Booking> bookingList = new ArrayList<Booking>();
 		BookingFile bf = new BookingFile();
 		bookingList = bf.retrieve();
-		
+
 		Scanner input = new Scanner(System.in);
 		String userInput;
 		int bookingID = 0;
 		int noOfPerson, premiseID;
-		double totalAmount,serviceFee;
-		String regEmail,checkInInput,checkOutInput;
+		double totalAmount, serviceFee;
+		String checkInInput, checkOutInput;
 		Date checkInDate, checkOutDate;
-	
+
 		SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
-		
+
 		UI.header("Create Booking");
 		bookingID = bookingList.size() + 100001;
-		
-		// prompt regEmail
-		System.out.print("Enter email:");
-		regEmail = input.nextLine();
-		
+
+		// prompt permiseID
+		System.out.print("Select permise:");
+		premiseID = input.nextInt();
+		input.nextLine();
+		// System.out.println("permiseID: " + permiseID);
+
 		// prompt check-in-date
 		System.out.print("Enter Check-in-date(yyyy-mm-dd):");
 		userInput = input.nextLine();
 		checkInInput = userInput;
 		checkInDate = ft.parse(checkInInput);
-		//System.out.println("check in date: " + checkInDate); 
+		// System.out.println("check in date: " + checkInDate);
 
 		// prompt check-out-date
 		System.out.print("Enter Check-out-date(yyyy-mm-dd):");
 		userInput = input.nextLine();
 		checkOutInput = userInput;
 		checkOutDate = ft.parse(checkOutInput);
-		//System.out.println("check out date: " + checkOutDate);
-		
-		
+		// System.out.println("check out date: " + checkOutDate);
 
-		// prompt permiseID
-		System.out.print("Select permise:");
-		premiseID = input.nextInt();
-		input.nextLine();
-		//System.out.println("permiseID: " + permiseID);
-		
-		// check if check in is before check out		
-		if  (!(checkInDate.compareTo(checkOutDate) < 0)) {
+		// check if check in is before check out
+		if (!(checkInDate.compareTo(checkOutDate) < 0)) {
 			System.out.print("\n\nCheck-In date must be before Check-Out date. ");
-			return;			
+			return;
 		}
 
 		// check for availability on dates
-		if (!checkAvailability(bookingID, premiseID, checkInDate, checkOutDate)){
+		if (!checkAvailability(bookingID, premiseID, checkInDate, checkOutDate)) {
 			System.out.print("\n\nThere are existing booking during the input dates.");
 			return;
 		}
-		
 
 		// prompt number of person
 		System.out.print("Enter number of person:");
 		userInput = input.nextLine();
 		noOfPerson = Integer.parseInt(userInput);
-		//System.out.println("Number of person: " + noOfPerson);		
-		
+		// System.out.println("Number of person: " + noOfPerson);
+
 		int days = calculateDays(checkInDate, checkOutDate);
 		System.out.print(days);
 
 		double price = 0;
 
 		ArrayList<Premises> premiseList = new ArrayList<Premises>();
-		for(Premises premise : premiseList) {
-			if(premise.equals(premiseID)) {
+		for (Premises premise : premiseList) {
+			if (premise.equals(premiseID)) {
 				price = premise.getPrice();
-			}		
+			}
 		}
 
-		totalAmount = price*days;
-		serviceFee = totalAmount*0.05;
-		
+		totalAmount = price * days;
+		serviceFee = totalAmount * 0.05;
+
 		Date today = new Date();
-		
-		Booking newBooking = new Booking(bookingID, regEmail, premiseID, 
-				today, checkInDate, checkOutDate, noOfPerson, totalAmount, serviceFee);
-		
+
+		Booking newBooking = new Booking(bookingID, email, premiseID, today, checkInDate, checkOutDate, noOfPerson,
+				totalAmount, serviceFee);
+
 		bookingList.add(newBooking);
-		
-		bf.save(bookingList);	
+
+		bf.save(bookingList);
 		System.out.println("Booking successfully recorded.");
 		System.out.println("Press ENTER to go to menu.");
-		
-		input.nextLine();		
+
+		input.nextLine();
 	}
 
 	public static void viewBooking(Booking booking) throws Exception {
@@ -134,51 +127,51 @@ public class BookingDAO {
 		String dateInput;
 
 		switch (choice) {
-			case 1:
-				System.out.print("Enter new Check-In Date: ");
-				dateInput = scanner.nextLine();
-				Date newCheckIn = ft.parse(dateInput);
+		case 1:
+			System.out.print("Enter new Check-In Date: ");
+			dateInput = scanner.nextLine();
+			Date newCheckIn = ft.parse(dateInput);
 
-				System.out.print("Enter new Check-Out Date: ");
-				dateInput = scanner.nextLine();
-				Date newCheckOut = ft.parse(dateInput);
+			System.out.print("Enter new Check-Out Date: ");
+			dateInput = scanner.nextLine();
+			Date newCheckOut = ft.parse(dateInput);
 
-				// check if check in is before check out
-				if (newCheckIn.compareTo(newCheckOut) < 0) {
-					
-					// check for availability on new dates
-					if (checkAvailability(booking.getBookingID(), booking.getPremiseID(), newCheckIn, newCheckOut)) {
-						booking.setCheckInDate(newCheckIn);
-						booking.setCheckOutDate(newCheckOut);
-						System.out.print("\n\nCheck-In & Check-Out date has been updated.");
-					} else {
-						System.out.print("\n\nThere are existing booking during the input dates.");
-						return;
-					}
+			// check if check in is before check out
+			if (newCheckIn.compareTo(newCheckOut) < 0) {
+
+				// check for availability on new dates
+				if (checkAvailability(booking.getBookingID(), booking.getPremiseID(), newCheckIn, newCheckOut)) {
+					booking.setCheckInDate(newCheckIn);
+					booking.setCheckOutDate(newCheckOut);
+					System.out.print("\n\nCheck-In & Check-Out date has been updated.");
 				} else {
-					System.out.print("\n\nCheck-In date must be before Check-Out date. ");
+					System.out.print("\n\nThere are existing booking during the input dates.");
 					return;
 				}
-				break;
+			} else {
+				System.out.print("\n\nCheck-In date must be before Check-Out date. ");
+				return;
+			}
+			break;
 
-			case 2:
-				System.out.print("Enter new Number of People: ");
-				int newNum = scanner.nextInt();
-				scanner.nextLine();
+		case 2:
+			System.out.print("Enter new Number of People: ");
+			int newNum = scanner.nextInt();
+			scanner.nextLine();
 
-				booking.setNoOfPerson(newNum);
+			booking.setNoOfPerson(newNum);
 
-				if (newNum > 0) {
-					System.out.print("\n\nNumber of people has updated.");
-				} else {
-					System.out.print("\n\nUpdate unsuccessful.");
-				}
+			if (newNum > 0) {
+				System.out.print("\n\nNumber of people has updated.");
+			} else {
+				System.out.print("\n\nUpdate unsuccessful.");
+			}
 
-				break;
+			break;
 
-			default:
+		default:
 
-				break;
+			break;
 		}
 
 	}
@@ -210,10 +203,10 @@ public class BookingDAO {
 			return false;
 	}
 
-	public static int calculateDays(Date checkIn, Date checkout) {
+	public static int calculateDays(Date checkIn, Date checkOut) {
 
-		long difference = checkIn.getTime() - checkout.getTime();
-		int day = ((int)difference / 86400000);
+		long difference = checkOut.getTime() - checkIn.getTime();
+		int day = ((int) difference / 86400000);
 
 		return day;
 	}
@@ -271,40 +264,41 @@ public class BookingDAO {
 	}
 
 	private Booking searchBooking(String str, String dateMonth) {
-    	//System.out.println("hey"+str);
-        String email = null;
-        Date bookingDate = null, checkInDate = null, checkOutDate = null;
-        int noOfPerson = 0, bookingid = 0, premiseid = 0;
-        double totalAmount = 0, serviceFee = 0;
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-        Scanner sc = new Scanner(str);
-        sc.useDelimiter(AbstractFile.getDELIMITER());
-        
-        Booking readBooking = null;
-        while (sc.hasNext()) {
-            bookingid = Integer.parseInt(sc.next());
-        	email = sc.next();
-        	premiseid = Integer.parseInt(sc.next());
-         	try {
-         		bookingDate = dateFormatter.parse(sc.next());		
-            	checkInDate = dateFormatter.parse(sc.next());
-            	
+		// System.out.println("hey"+str);
+		String email = null;
+		Date bookingDate = null, checkInDate = null, checkOutDate = null;
+		int noOfPerson = 0, bookingid = 0, premiseid = 0;
+		double totalAmount = 0, serviceFee = 0;
+		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+		Scanner sc = new Scanner(str);
+		sc.useDelimiter(AbstractFile.getDELIMITER());
+
+		Booking readBooking = null;
+		while (sc.hasNext()) {
+			bookingid = Integer.parseInt(sc.next());
+			email = sc.next();
+			premiseid = Integer.parseInt(sc.next());
+			try {
+				bookingDate = dateFormatter.parse(sc.next());
+				checkInDate = dateFormatter.parse(sc.next());
+
 				checkOutDate = dateFormatter.parse(sc.next());
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-         	noOfPerson = Integer.parseInt(sc.next());
-         	totalAmount = Double.parseDouble(sc.next());
-         	serviceFee = Double.parseDouble(sc.next());
-      
-        }
-        if(checkInDate.getMonth()+1 == Integer.parseInt(dateMonth)) {
-        	readBooking = new Booking(bookingid, email, premiseid, bookingDate, checkInDate, checkOutDate, noOfPerson, totalAmount, serviceFee);
-    	}
-        
-        sc.close();
-        
-        return readBooking;    
-    }
+			noOfPerson = Integer.parseInt(sc.next());
+			totalAmount = Double.parseDouble(sc.next());
+			serviceFee = Double.parseDouble(sc.next());
+
+		}
+		if (checkInDate.getMonth() + 1 == Integer.parseInt(dateMonth)) {
+			readBooking = new Booking(bookingid, email, premiseid, bookingDate, checkInDate, checkOutDate, noOfPerson,
+					totalAmount, serviceFee);
+		}
+
+		sc.close();
+
+		return readBooking;
+	}
 }

@@ -59,7 +59,7 @@ public class UI {
 		System.out.println("Option 2: Sign up");
 	}
 
-	public static void displayUserMainMenu(Person usingPerson) throws ParseException {
+	public static void displayUserMainMenu(Person usingPerson) throws Exception {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Option 1: Add Booking");
 		System.out.println("Option 2: Search Booking");
@@ -68,12 +68,12 @@ public class UI {
 
 		switch (ac.getMenuInput()) {
 			case 1:
-				bd.createBooking();
+				bd.createBooking(usingPerson.getRegEmail());
 				break;
 
 			case 2:
 				// bd.searchAdmin(args);
-				displaySearchMenu(booking);
+				//displaySearchMenu(booking);
 				break;
 		}
 	}
