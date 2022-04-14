@@ -1,13 +1,14 @@
 package delivery.UI;
 
 import java.io.FileNotFoundException;
+import java.text.ParseException;
 
 import delivery.classes.*;
 
 public class BookingApps {
 	
 	private static AppsController controller = new AppsController();
-	public static void main(String[] args) throws FileNotFoundException {
+	public static void main(String[] args) throws FileNotFoundException, ParseException {
 		int select = 1;
 		boolean exit = false;
 		Person entryPerson = login();

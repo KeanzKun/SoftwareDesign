@@ -1,5 +1,6 @@
 package delivery.classes;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Booking {
@@ -108,12 +109,23 @@ public class Booking {
 	}
 	@Override
 	public String toString() {
+		String bookingDate = dateToString(this.getBookingDate());
+		String checkInDate = dateToString(this.getCheckInDate());
+		String checkOutDate = dateToString(this.getCheckOutDate());
+		
 		return this.bookingID + ";" + this.getRegEmail() + ";" 
-			+ this.premiseID + ";" + this.getBookingDate() + ";" 
-			+ this.getCheckInDate() + ";" + this.getCheckOutDate() + ";" 
+			+ this.premiseID + ";" + bookingDate + ";" 
+			+ checkInDate + ";" + checkInDate + ";" 
 			+ Integer.toString(this.getNoOfPerson()) + ";" 
 			+ Double.toString(getTotalAmount()) + ";" 
 			+ this.getPayment() + ";" 
 			+ Double.toString(getServiceFee());
+	}
+	
+	public String dateToString(Date date) {
+		SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
+		String stringDate = ft.format(date);
+		
+		return stringDate;
 	}
 }

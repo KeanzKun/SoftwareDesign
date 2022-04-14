@@ -1,6 +1,7 @@
 package delivery.UI;
 
 import java.io.FileNotFoundException;
+import java.text.ParseException;
 import java.util.Scanner;
 import delivery.classes.*;
 
@@ -25,7 +26,7 @@ public class UI {
 		System.out.println("Option 2: Sign up");
 	}
 
-	public static void displayUserMainMenu() {
+	public static void displayUserMainMenu() throws ParseException {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Option 1: Add Booking");
 		System.out.println("Option 2: View Booking");
@@ -39,7 +40,7 @@ public class UI {
 
 		switch (ac.getMenuInput()) {
 			case 1:
-				// bd.addBooking();
+				bd.createBooking();
 				break;
 
 			case 2:
@@ -121,7 +122,7 @@ public class UI {
 				BookingDAO fileSearch = new BookingDAO();
 				System.out.println("Insert booking keyword to search: ");
 				String keyword = scanner.nextLine();
-				fileSearch.parseFile("../AirbnbBookingSystem/Booking.txt", (keyword));
+				//fileSearch.parseFile("../AirbnbBookingSystem/Booking.txt", (keyword));
 				break;
 
 			default:

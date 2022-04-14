@@ -3,6 +3,7 @@ package delivery.classes;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -16,7 +17,80 @@ public class BookingDAO {
 	static ArrayList<Booking> bookingList = new ArrayList<Booking>();
 
 	static Scanner scanner = new Scanner(System.in);
+
 	static SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
+	
+	public static void createBooking() throws ParseException {
+		ArrayList<Booking> bookingList = new ArrayList<Booking>();
+		BookingFile bf = new BookingFile();
+		bookingList = bf.retrieve();
+		
+		Scanner input = new Scanner(System.in);
+		String userInput;
+		int bookingID = 10001;
+		int noOfPerson;
+		double totalAmount,serviceFee;
+		String regEmail,permiseID,bookingDate,paymentInput,checkInInput,checkOutInput;
+		Date checkInDate, checkOutDate;
+	
+		SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
+		
+		
+		
+		UI.header("Create Booking");
+		bookingID = 10001;
+		
+		// prompt regEmail
+		System.out.print("Enter email:");
+		regEmail = input.nextLine();
+		
+		// prompt check-in-date
+		System.out.print("Enter Check-in-date(yyyy-mm-dd):");
+		userInput = input.nextLine();
+		checkInInput = userInput;
+		checkInDate = ft.parse(checkInInput);
+		System.out.println("check in date: " + checkInDate); 
+
+		// prompt check-out-date
+		System.out.print("Enter Check-out-date(yyyy-mm-dd):");
+		userInput = input.nextLine();
+		checkOutInput = userInput;
+		checkOutDate = ft.parse(checkOutInput);
+		System.out.println("check out date: " + checkOutDate);
+		
+		// prompt permiseID
+		System.out.print("Select permise:");
+		permiseID = input.nextLine();
+		System.out.println("permiseID: " + permiseID);
+		
+		// prompt number of person
+		System.out.print("Enter number of person:");
+		userInput = input.nextLine();
+		noOfPerson = Integer.parseInt(userInput);
+		System.out.println("Number of person: " + noOfPerson);
+		 
+		
+		paymentInput = "creditcard";
+		Payment payment = new Payment(paymentInput);
+		totalAmount = 50.00;
+		serviceFee = 3.00;
+		
+		Date today = new Date();
+		
+		
+		Booking newBooking = new Booking(bookingID, regEmail, permiseID, 
+				today, checkInDate, checkOutDate, noOfPerson, totalAmount, payment, serviceFee);
+		
+		bookingList.add(newBooking);
+		
+		bf.save(bookingList);	
+		System.out.print("Booking successfully recorded.");
+		System.out.print("Press ENTER to go to menu.");
+		
+		input.nextLine();
+		
+			
+	}
 
 	public static void viewBooking(Booking booking) throws Exception {
 		System.out.println("Booking ID: " + booking.getBookingID());
