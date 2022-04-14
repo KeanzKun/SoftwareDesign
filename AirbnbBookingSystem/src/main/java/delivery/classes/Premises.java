@@ -81,7 +81,7 @@ public class Premises {
 		}
 		return isEqual;
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.premiseID + ";" + this.getName() + ";" 

@@ -2,12 +2,12 @@ package delivery.classes;
 
 import java.util.ArrayList;
 
+import delivery.UI.AppsController;
 import delivery.database.BookingFile;
 
 public class GenerateSalesReport {
 	
 	private double commission;
-	private int premiseID;
 	private double totalSales;
 	private Booking booking;
 	private PersonType personType;
@@ -21,7 +21,7 @@ public class GenerateSalesReport {
 		this.totalSales = 0;
 	}
 	
-	public void printReport() throws Exception
+	public void printReport(String dateMonth) throws Exception
 	{
 		
 		BookingFile BF = new BookingFile();
@@ -30,7 +30,9 @@ public class GenerateSalesReport {
 		//ask SiowYen how to type month to search
 		for(Booking bookingValue : bookingList) {
 			if(bookingValue.getRegEmail().equals(email)) {
+				if(bookingValue.getCheckInDate().getMonth()+1 == Integer.parseInt(dateMonth))
 				bookingDAO.viewBooking(bookingValue);
+				
 			}		
 		}
 		
@@ -40,23 +42,26 @@ public class GenerateSalesReport {
 		else
 			System.out.println("Total Commission to receive: " + commission);
 		
+		AppsController AC = new AppsController();
+		AC.enterToContinue();
 	}
 	
 	
-	public double calculateCommission() throws Exception
+	public double calculateCommission(String dateMonth) throws Exception
 	{
-		int totalBookingInMonth = 0;
-		
 		//ask SiowYen How to type month to calculate
 		for(Booking bookingValue : bookingList) {
 			if(bookingValue.getRegEmail().equals(email)) {
+				if(bookingValue.getCheckInDate().getMonth()+1 == Integer.parseInt(dateMonth))
 				totalSales += bookingValue.getTotalAmount();
 				break;
 			}		
 		}
 		
+		commission = totalSales * 5/100;
 		return commission;
 	}
+	
 	
 
 	

@@ -12,7 +12,6 @@ public class BookingApps {
 		boolean exit = false;
 		Person entryPerson = UI.login();
 		
-		do {
 			UI.header("Main Menu");
 		switch(entryPerson.getPersonType()) {
 		case Admin:
@@ -30,7 +29,6 @@ public class BookingApps {
 			
 			break;
 		}
-		}while(!exit);
 	}
 	
 	

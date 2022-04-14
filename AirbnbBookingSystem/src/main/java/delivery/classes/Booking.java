@@ -103,6 +103,11 @@ public class Booking {
 	}
 	@Override
 	public String toString() {
+		
+		System.out.println(this.getBookingDate());
+		System.out.println(this.getCheckInDate());
+		System.out.println(this.getCheckOutDate());
+
 		String bookingDate = dateToString(this.getBookingDate());
 		String checkInDate = dateToString(this.getCheckInDate());
 		String checkOutDate = dateToString(this.getCheckOutDate());

@@ -210,9 +210,9 @@ public class BookingDAO {
 			return false;
 	}
 
-	public static int calculateDays(Date checkIn, Date checkout) {
+	public static int calculateDays(Date checkIn, Date checkOut) {
 
-		long difference = checkIn.getTime() - checkout.getTime();
+		long difference = checkOut.getTime() - checkIn.getTime();
 		int day = ((int)difference / 86400000);
 
 		return day;

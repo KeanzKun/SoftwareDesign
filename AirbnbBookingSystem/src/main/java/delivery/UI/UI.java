@@ -8,7 +8,7 @@ import delivery.classes.*;
 public class UI {
 	Scanner scanner = new Scanner(System.in);
 	static AppsController ac = new AppsController();
-
+	static Boolean exit = false;
 	//login UI
 	public static Person login() {
 		Person loginUserDetail = null;
@@ -63,19 +63,25 @@ public class UI {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Option 1: Add Booking");
 		System.out.println("Option 2: Search Booking");
-
+		System.out.println("Option 0: Exit");
 		BookingDAO bd = new BookingDAO();
+		
 
-		switch (ac.getMenuInput()) {
-			case 1:
-				bd.createBooking();
-				break;
+		do {
+			switch (ac.getMenuInput()) {
+				case 1:
+					bd.createBooking();
+					break;
 
-			case 2:
-				// bd.searchAdmin(args);
-				displaySearchMenu(booking);
-				break;
-		}
+				case 2:
+					// bd.searchAdmin(args);
+					displaySearchMenu(booking);
+					break;
+				case 0:
+					exit = true;
+					break;
+			}
+		} while(!exit);
 	}
 
 	public static void displaySearchMenu(Booking booking) throws Exception {
@@ -119,21 +125,24 @@ public class UI {
 		System.out.println("Option 1: Generate Sales Report");
 		System.out.println("Option 2: Search Booking");
 
-		switch (ac.getMenuInput()) {
-			case 1:
-				break;
-
-			case 2:
-				BookingDAO fileSearch = new BookingDAO();
-				System.out.println("Insert booking keyword to search: ");
-				String keyword = scanner.nextLine();
-				fileSearch.parseFile("../AirbnbBookingSystem/Booking.txt", (keyword));
-				break;
-
-			default:
-				System.out.println("Invalid input try again");
-				break;
-		}
+		do {
+			switch (ac.getMenuInput()) {
+				case 1:
+					break;
+	
+				case 2:
+					BookingDAO fileSearch = new BookingDAO();
+					System.out.println("Insert booking keyword to search: ");
+					String keyword = scanner.nextLine();
+					fileSearch.parseFile("../AirbnbBookingSystem/Booking.txt", (keyword));
+					break;
+	
+				default:
+					System.out.println("Invalid input try again");
+					break;
+			}
+		} while(!exit);
+		
 
 	}
 
