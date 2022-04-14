@@ -8,9 +8,10 @@ public class Premises {
 	private int capacity;
 	private int numRoom;
 	private String regEmail;
+	private double price;
 	private boolean active;
 	
-	public Premises(int premiseID, String name, String address, String type, int capacity, int numRoom, String regEmail) {
+	public Premises(int premiseID, String name, String address, String type, int capacity, int numRoom,double price, String regEmail) {
 		this.premiseID = premiseID;
 		this.name = name;
 		this.address = address;
@@ -19,9 +20,10 @@ public class Premises {
 		this.numRoom = numRoom;
 		this.regEmail = regEmail;
 		this.setActive(true);
+		this.price = price;
 	}
 	
-	public Premises(int premiseID, String name, String address, String type, int capacity, int numRoom, String regEmail, boolean active) {
+	public Premises(int premiseID, String name, String address, String type, int capacity, int numRoom,double price, String regEmail, boolean active) {
 		this.premiseID = premiseID;
 		this.name = name;
 		this.address = address;
@@ -60,6 +62,9 @@ public class Premises {
 		return regEmail;
 	}
 
+	public double getPrice() {
+		return this.price;
+	}
 	public boolean isActive() {
 		return active;
 	}
@@ -76,11 +81,12 @@ public class Premises {
 		}
 		return isEqual;
 	}
+	
 	@Override
 	public String toString() {
 		return this.premiseID + ";" + this.getName() + ";" 
 			+ this.getAddress() + ";" + this.getType() + ";" 
 			+ this.getCapacity() + ";" + this.getNumRoom() + ";"
-			 + this.getRegEmail() + ";" + this.isActive();
+			+ Double.toString(this.getPrice()) + ";" + this.getRegEmail() + ";" +  this.isActive();
 	}
 }

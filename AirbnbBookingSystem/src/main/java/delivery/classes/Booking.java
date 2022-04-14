@@ -6,19 +6,18 @@ import java.util.Date;
 public class Booking {
 	private int bookingID;
 	private String regEmail;
-	private String premiseID;
+	private int premiseID;
 	private Date bookingDate;
 	private Date checkInDate;
 	private Date checkOutDate;
 	private int noOfPerson;
 	private double totalAmount;
-	private Payment payment;
 	private double serviceFee;
 	private boolean status;
 
-	public Booking(int bookingID, String regEmail, String premiseID, 
+	public Booking(int bookingID, String regEmail, int premiseID, 
 		Date bookingDate, Date checkInDate, Date checkOutDate, 
-		int noOfPerson, double totalAmount, Payment payment, 
+		int noOfPerson, double totalAmount, 
 		double serviceFee) {
 
 		this.bookingID = bookingID;
@@ -29,7 +28,6 @@ public class Booking {
 		this.setCheckOutDate(checkOutDate);
 		this.setNoOfPerson(noOfPerson);
 		this.setTotalAmount(totalAmount);
-		this.payment = payment;
 		this.setServiceFee(serviceFee);
 		status = true;
 
@@ -43,7 +41,7 @@ public class Booking {
 		return regEmail;
 	}
 
-	public String getPremiseID(){
+	public int getPremiseID(){
 		return premiseID;
 	}
 
@@ -83,10 +81,6 @@ public class Booking {
 		this.totalAmount = totalAmount;
 	}
 
-	public String getPayment() {
-		return payment.getPaymentID();
-	}
-
 	public double getServiceFee() {
 		return serviceFee;
 	}
@@ -115,10 +109,9 @@ public class Booking {
 		
 		return this.bookingID + ";" + this.getRegEmail() + ";" 
 			+ this.premiseID + ";" + bookingDate + ";" 
-			+ checkInDate + ";" + checkInDate + ";" 
+			+ checkInDate + ";" + checkOutDate + ";" 
 			+ Integer.toString(this.getNoOfPerson()) + ";" 
 			+ Double.toString(getTotalAmount()) + ";" 
-			+ this.getPayment() + ";" 
 			+ Double.toString(getServiceFee());
 	}
 	

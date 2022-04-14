@@ -9,6 +9,39 @@ public class UI {
 	Scanner scanner = new Scanner(System.in);
 	static AppsController ac = new AppsController();
 
+	//login UI
+	public static Person login() {
+		Person loginUserDetail = null;
+		boolean login_Next = false;
+		int loginOption = 0;
+		
+		do {
+			UI.header("Welcome to the Airbnb Booking System");
+			UI.displayEnterMainMenu();
+			loginOption = UI.askEventNo(1, 2);
+			if(loginOption == 1) {
+				String email = InputValidation.readString("Email");
+				String password = InputValidation.readString("Password");
+				loginUserDetail = ac.findPerson(email, password);
+				if(loginUserDetail != null) {
+					login_Next = true;
+				}
+				else {
+					System.out.println("Invalid Login Credential!!!");
+				}
+			}
+			else if(loginOption == 2) {
+				UI.header("Sign Up");
+				System.out.println("Enter New Details:");
+				ac.createNewUser();
+			}
+			
+			
+		} while(!login_Next);
+		
+		return loginUserDetail;
+	}
+
 	// display header
 	public static void header(String heading) {
 		System.out.printf("%n%n");
@@ -26,10 +59,10 @@ public class UI {
 		System.out.println("Option 2: Sign up");
 	}
 
-	public static void displayUserMainMenu() throws ParseException {
+	public static void displayUserMainMenu(Person usingPerson) throws ParseException {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Option 1: Add Booking");
-		System.out.println("Option 2: View Booking");
+		System.out.println("Option 2: Search Booking");
 
 		BookingDAO bd = new BookingDAO();
 
@@ -40,7 +73,7 @@ public class UI {
 
 			case 2:
 				// bd.searchAdmin(args);
-				// displaySearchMenu(booking);
+				displaySearchMenu(booking);
 				break;
 		}
 	}
@@ -81,7 +114,7 @@ public class UI {
 		return ac.getMenuInput();
 	}
 
-	public static void displayAdminMainMenu() throws FileNotFoundException {
+	public static void displayAdminMainMenu(Person usingPerson) throws FileNotFoundException {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Option 1: Generate Sales Report");
 		System.out.println("Option 2: Search Booking");
@@ -104,7 +137,7 @@ public class UI {
 
 	}
 
-	public static void displayHostMainMenu() {
+	public static void displayHostMainMenu(Person usingPerson) {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Option 1: Search Booking");
 		System.out.println("Option 2: Generate Sales Report");
@@ -122,6 +155,7 @@ public class UI {
 				break;
 				
 			case 3:
+				ac.createNewPremises(usingPerson);
 				break;
 
 			default:
@@ -157,4 +191,6 @@ public class UI {
 		}
 		return eventNo;
 	}
+	
+	
 }

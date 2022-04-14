@@ -54,7 +54,7 @@ public class PersonFile extends AbstractFile {
 	    }
 
 	    private Person readPersonFile(String str) {
-	        String email = null, name = null, ic = null, address = null, telNo = null, password = null, type = null;
+	        String email = null, name = null, ic = null, address = null, telNo = null, password = null, type = null, paymentID = null;
 	        PersonType persontype = null;
 	        Scanner sc = new Scanner(str);
 	        sc.useDelimiter(AbstractFile.getDELIMITER());
@@ -67,13 +67,14 @@ public class PersonFile extends AbstractFile {
 	        	telNo = sc.next(); 
 	        	password = sc.next();
 	        	type = sc.next();
+				paymentID = sc.next();
 	        }
 	        switch(type){
 	        	case "User": persontype = PersonType.User; break;
 	        	case "Host": persontype = PersonType.Host; break;
 	        	case "Admin": persontype = PersonType.Admin; break;
 	        }
-	        Person readPerson = new Person(email, name, ic, address, telNo, password, persontype); 
+	        Person readPerson = new Person(email, name, ic, address, telNo, password, persontype, paymentID); 
 	        sc.close();
 	        return readPerson;
 

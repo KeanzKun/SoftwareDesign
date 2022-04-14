@@ -12,9 +12,6 @@ import java.util.Date;
 import java.util.Scanner;
 
 import delivery.classes.Booking;
-import delivery.classes.Payment;
-import delivery.classes.Person;
-import delivery.classes.PersonType;
 
 public class BookingFile extends AbstractFile{
 	final static String fileName = "Booking.txt";
@@ -59,11 +56,10 @@ public class BookingFile extends AbstractFile{
     }
 
     private Booking readBookingFile(String str) {
-        String email = null, premiseid = null, paymentID;
+        String email = null;
         Date bookingDate = null, checkInDate = null, checkOutDate = null;
-        int noOfPerson = 0, bookingid = 0;
+        int noOfPerson = 0, bookingid = 0, premiseid = 0;
         double totalAmount = 0, serviceFee = 0;
-        Payment payment = null;
         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
         Scanner sc = new Scanner(str);
         sc.useDelimiter(AbstractFile.getDELIMITER());
@@ -71,7 +67,7 @@ public class BookingFile extends AbstractFile{
         while (sc.hasNext()) {
             bookingid = Integer.parseInt(sc.next());
         	email = sc.next();
-        	premiseid = sc.next();
+        	premiseid = Integer.parseInt(sc.next());
          	try {
          		bookingDate = dateFormatter.parse(sc.next());		
             	checkInDate = dateFormatter.parse(sc.next());
@@ -82,16 +78,15 @@ public class BookingFile extends AbstractFile{
 			}
          	noOfPerson = Integer.parseInt(sc.next());
          	totalAmount = Double.parseDouble(sc.next());
-         	paymentID = sc.next();
-         	payment = new Payment(paymentID);
          	serviceFee = Double.parseDouble(sc.next());
       
         }
        
-        Booking readBooking = new Booking(bookingid, email, premiseid, bookingDate, checkInDate, checkOutDate, noOfPerson, totalAmount, payment, serviceFee);
+        Booking readBooking = new Booking(bookingid, email, premiseid, bookingDate, checkInDate, checkOutDate, noOfPerson, totalAmount, serviceFee);
         sc.close();
         
         return readBooking;    
     }
+    
     
 }

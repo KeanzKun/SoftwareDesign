@@ -8,8 +8,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import delivery.classes.Person;
-import delivery.classes.PersonType;
+
 import delivery.classes.Premises;
 
 public class PremisesFile extends AbstractFile{
@@ -57,6 +56,7 @@ public class PremisesFile extends AbstractFile{
     private Premises readPremisesFile(String str) {
         String name = null, address = null, type = null, email = null;
         int capacity = 0, numRoom = 0, premiseID = 0;
+        double price = 0;
         Boolean active = null;
         Scanner sc = new Scanner(str);
         sc.useDelimiter(AbstractFile.getDELIMITER());
@@ -68,11 +68,12 @@ public class PremisesFile extends AbstractFile{
         	type = sc.next(); 
         	capacity = Integer.parseInt(sc.next());
         	numRoom = Integer.parseInt(sc.next());
-        	email = sc.next();    
+            price = Double.parseDouble(sc.next());   
+        	email = sc.next(); 
         	active = Boolean.parseBoolean(sc.next());
         }
        
-        Premises readPremise = new Premises(premiseID, name, address, type, capacity, numRoom, email, active); 
+        Premises readPremise = new Premises(premiseID, name, address, type, capacity, numRoom,price, email, active); 
         sc.close();
         return readPremise;
         

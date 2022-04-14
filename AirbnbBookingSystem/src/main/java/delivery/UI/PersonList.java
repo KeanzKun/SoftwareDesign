@@ -17,8 +17,8 @@ public class PersonList {
 	}
 	
 	//add person into list
-	public void AddNewPerson(String regEmail, String name, String ic, String homeAddress, String phoneNo, String password, PersonType personType) {
-		Person newPerson = new Person(regEmail, name, ic, homeAddress, phoneNo, password, personType);
+	public void AddNewPerson(String regEmail, String name, String ic, String homeAddress, String phoneNo, String password, PersonType personType, String paymentID) {
+		Person newPerson = new Person(regEmail, name, ic, homeAddress, phoneNo, password, personType, paymentID);
 		personList.add(newPerson);
 		
 		file.save(personList);

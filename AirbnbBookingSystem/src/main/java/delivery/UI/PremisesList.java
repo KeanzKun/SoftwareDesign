@@ -12,10 +12,10 @@ public class PremisesList {
 	PremisesFile file = new PremisesFile();
 	ArrayList<Premises> premiseList = file.retrieve();
 	public void AddNewPremise(Person activePerson, String name, String address, String type, int capacity,
-			int numRoom) {
+			int numRoom, double price) {
 		
 		if(activePerson.getPersonType() == PersonType.Host) {
-			Premises newPremise = new Premises(getNewPremiseID(), name, address, type, capacity, numRoom, activePerson.getRegEmail());
+			Premises newPremise = new Premises(getNewPremiseID(), name, address, type, capacity, numRoom, price, activePerson.getRegEmail());
 			premiseList.add(newPremise);
 		}
 	}

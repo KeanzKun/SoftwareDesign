@@ -8,9 +8,9 @@ public class Person {
 	private String phoneNo;
 	private String password;
 	private PersonType personType;
+	private String paymentID;
 	
-	
-	public Person(String regEmail, String name, String ic, String homeAddress, String phoneNo, String password, PersonType personType) {
+	public Person(String regEmail, String name, String ic, String homeAddress, String phoneNo, String password, PersonType personType, String paymentID) {
 		this.setRegEmail(regEmail);
 		this.name = name;
 		this.ic = ic;
@@ -18,7 +18,7 @@ public class Person {
 		this.setPhoneNo(phoneNo);
 		this.setPassword(password);
 		this.personType = personType;
-		
+		this.paymentID = paymentID;
 	}
 
 	public String getHomeAddress() {
@@ -61,6 +61,13 @@ public class Person {
 		return ic;
 	}
 	
+	public String getPaymentID() {
+		return this.paymentID;
+	}
+
+	public void setPaymentID(String ID) {
+		this.paymentID = ID;
+	}
 	public boolean equals(String regEmail) {
 		boolean sameObject= false;
 		
@@ -82,7 +89,7 @@ public class Person {
 	@Override
 	public String toString() {
 		
-		return this.getRegEmail() + ";" + this.getName() + ";" + this.getIc() + ";" + this.getHomeAddress() + ";" + this.getPhoneNo() + ";" + this.password + ";" + this.getPersonType();
+		return this.getRegEmail() + ";" + this.getName() + ";" + this.getIc() + ";" + this.getHomeAddress() + ";" + this.getPhoneNo() + ";" + this.password + ";" + this.getPersonType() + ";" + this.getPaymentID();
 		
 	}
 }

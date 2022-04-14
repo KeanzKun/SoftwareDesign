@@ -99,4 +99,23 @@ public class InputValidation {
 			default: return null;
 		}
 	}
+
+    public static double readPositiveDouble(String info) {
+		double readInput;
+		String errorMessage = "\nPlease enter a positive number.";
+
+		while (true) {
+			System.out.printf("%nEnter %s: ", info);
+			try {
+				readInput = Double.parseDouble(input.nextLine());
+				if (readInput <= 0) {
+					System.out.println(errorMessage);
+				} else {
+					return readInput;
+				}
+			} catch (NumberFormatException e) {
+				System.out.println(errorMessage);
+			}
+		}
+	}
 }
