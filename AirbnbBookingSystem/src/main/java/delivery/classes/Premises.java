@@ -1,7 +1,7 @@
 package delivery.classes;
 
 public class Premises {
-	private String premiseID;
+	private int premiseID;
 	private String name;
 	private String address;
 	private String type;
@@ -10,7 +10,7 @@ public class Premises {
 	private String regEmail;
 	private boolean active;
 	
-	public Premises(String premiseID, String name, String address, String type, int capacity, int numRoom, String regEmail) {
+	public Premises(int premiseID, String name, String address, String type, int capacity, int numRoom, String regEmail) {
 		this.premiseID = premiseID;
 		this.name = name;
 		this.address = address;
@@ -21,8 +21,7 @@ public class Premises {
 		this.setActive(true);
 	}
 	
-	//not necessary
-	public Premises(String premiseID, String name, String address, String type, int capacity, int numRoom, String regEmail, boolean active) {
+	public Premises(int premiseID, String name, String address, String type, int capacity, int numRoom, String regEmail, boolean active) {
 		this.premiseID = premiseID;
 		this.name = name;
 		this.address = address;
@@ -33,6 +32,10 @@ public class Premises {
 		this.active = active;
 	}
 
+	public int getPremiseID() {
+		return premiseID;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -65,7 +68,7 @@ public class Premises {
 		this.active = active;
 	}
 
-	public boolean equals(String premiseID) {
+	public boolean equals(int premiseID) {
 		boolean isEqual = false;
 		
 		if(this.premiseID == premiseID) {
