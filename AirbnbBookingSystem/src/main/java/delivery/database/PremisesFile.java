@@ -69,11 +69,13 @@ public class PremisesFile extends AbstractFile{
         	capacity = Integer.parseInt(sc.next());
         	numRoom = Integer.parseInt(sc.next());
             price = Double.parseDouble(sc.next());   
+            
         	email = sc.next(); 
         	active = Boolean.parseBoolean(sc.next());
         }
        
         Premises readPremise = new Premises(premiseID, name, address, type, capacity, numRoom,price, email, active); 
+        
         sc.close();
         return readPremise;
         

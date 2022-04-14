@@ -7,3 +7,4 @@ ghost02@gmail.com;Justin Bibi;940311075345;7, Jln Suga 1, Tmn Holy;0123434353;ju
 jojo333@gmail.com;Jojo Diodio;890415073153;4, Jln Coco, Tmn Sai;0129808086;mudamuda12;Host;8888111144440003;
 sasuke@gmail.com;Uchiha Sasuke;990430038803;9, Jln Uchiha, Tmn Uchiha;0123434353;sharingan012;Host;8888111144440004;
 naruto@gmail.com;Uzumaki Naruto;990121038085;A1-10-1, Hokage Condo;0123434300;kurama999;Host;8888111144440005;
+super;koonqi;960225105136;puchong;012456789;super;User;ABC

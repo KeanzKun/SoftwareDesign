@@ -31,6 +31,7 @@ public class Premises {
 		this.capacity = capacity;
 		this.numRoom = numRoom;
 		this.regEmail = regEmail;
+		this.price = price;
 		this.active = active;
 	}
 

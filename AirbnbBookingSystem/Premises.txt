@@ -1,7 +1,7 @@
-1;Holiday Home;Puchong;Landed;5;2;200;naruto@gmail.com;true
-2;Relax Relax;Cheras;High Rise;4;2;175;sasuke@gmail.com;true
-3;Homestay;Subang;Landed;7;3;500;jojo333@gmail.com;true
-4;Resort Inn;Bangsar;Landed;3;1;150;jojo333@gmail.com;true
-5;bestairbnb;Batu 9;Landed;3;1;150;ghost02@gmail.com;true
-6;best condp;Batu 11;Landed;3;1;150;poker01@gmail.com;true
-7;Resort relax;TamanNajib;Landed;3;1;150;naruto@gmail.com;true
+1;Holiday Home;Puchong;Landed;5;2;200.00;naruto@gmail.com;true
+2;Relax Relax;Cheras;High Rise;4;2;175.00;sasuke@gmail.com;true
+3;Homestay;Subang;Landed;7;3;500.00;jojo333@gmail.com;true
+4;Resort Inn;Bangsar;Landed;3;1;150.00;jojo333@gmail.com;true
+5;bestairbnb;Batu 9;Landed;3;1;150.00;ghost02@gmail.com;true
+6;best condp;Batu 11;Landed;3;1;150.00;poker01@gmail.com;true
+7;Resort relax;TamanNajib;Landed;3;1;150.00;naruto@gmail.com;true
