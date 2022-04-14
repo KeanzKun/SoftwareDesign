@@ -32,8 +32,4 @@ public class BookingApps {
 		}
 		}while(!exit);
 	}
-	
-	
-	
-	
 }

@@ -10,36 +10,34 @@ public class UI {
 	Scanner scanner = new Scanner(System.in);
 	static AppsController ac = new AppsController();
 	static Boolean exit = false;
-	//login UI
+
+	// login UI
 	public static Person login() {
 		Person loginUserDetail = null;
 		boolean login_Next = false;
 		int loginOption = 0;
-		
+
 		do {
 			header("Welcome to the Airbnb Booking System");
 			displayEnterMainMenu();
 			loginOption = askEventNo(1, 2);
-			if(loginOption == 1) {
+			if (loginOption == 1) {
 				String email = InputValidation.readString("Email");
 				String password = InputValidation.readString("Password");
 				loginUserDetail = ac.findPerson(email, password);
-				if(loginUserDetail != null) {
+				if (loginUserDetail != null) {
 					login_Next = true;
-				}
-				else {
+				} else {
 					System.out.println("Invalid Login Credential!!!");
 				}
-			}
-			else if(loginOption == 2) {
+			} else if (loginOption == 2) {
 				header("Sign Up");
 				System.out.println("Enter New Details:");
 				ac.createNewUser();
 			}
-			
-			
-		} while(!login_Next);
-		
+
+		} while (!login_Next);
+
 		return loginUserDetail;
 	}
 
@@ -62,31 +60,30 @@ public class UI {
 
 	public static void displayUserMainMenu(Person usingPerson) throws Exception {
 		Scanner scanner = new Scanner(System.in);
-		
+
 		BookingDAO bd = new BookingDAO();
-		
 
 		do {
 			System.out.println("Option 1: Add Booking");
 			System.out.println("Option 2: Search Booking");
 			System.out.println("Option 0: Exit");
 			switch (ac.getMenuInput()) {
-				case 1:
-					bd.createBooking(usingPerson.getRegEmail());
-					break;
+			case 1:
+				bd.createBooking(usingPerson.getRegEmail());
+				break;
 
-				case 2:
-					System.out.println("Enter year to search:");
-					int year = scanner.nextInt();
-					scanner.nextLine();
-					Booking selected = bd.searchBookingUser(year, usingPerson.getRegEmail());
-					displaySearchMenu(selected);
-					break;
-				case 0:
-					exit = true;
-					break;
+			case 2:
+				System.out.println("Enter year to search:");
+				int year = scanner.nextInt();
+				scanner.nextLine();
+				Booking selected = bd.searchBookingUser(year, usingPerson.getRegEmail());
+				displaySearchMenu(selected);
+				break;
+			case 0:
+				exit = true;
+				break;
 			}
-		} while(!exit);
+		} while (!exit);
 	}
 
 	public static void displaySearchMenu(Booking booking) throws Exception {
@@ -98,20 +95,20 @@ public class UI {
 		BookingDAO bd = new BookingDAO();
 
 		switch (ac.getMenuInput()) {
-			case 1:
-				bd.viewBooking(booking);
+		case 1:
+			bd.viewBooking(booking);
 
-				break;
+			break;
 
-			case 2:
-				bd.updateBooking(booking);
+		case 2:
+			bd.updateBooking(booking);
 
-				break;
+			break;
 
-			case 3:
-				bd.cancelBooking(booking);
+		case 3:
+			bd.cancelBooking(booking);
 
-				break;
+			break;
 		}
 	}
 
@@ -135,75 +132,70 @@ public class UI {
 			System.out.println("Option 2: Search Booking");
 			System.out.println("Option 0: Exit");
 			switch (ac.getMenuInput()) {
-				case 1:
-					
-				do{
-				System.out.println("Please enter email you want to search, enter q to Quit");
-				email= scanner.nextLine();
-				
-				for(Person personValue : personArr.retrieve())
-				{
-					if(personValue.getRegEmail().equals(email))
-					{
-						check = true;
+			case 1:
+
+				do {
+					System.out.println("Please enter email you want to search, enter q to Quit");
+					email = scanner.nextLine();
+
+					for (Person personValue : personArr.retrieve()) {
+						if (personValue.getRegEmail().equals(email)) {
+							check = true;
+						}
 					}
-				}
-				if(!check && !email.equals("q"))
-				{
-					System.out.println("Email Not found.");
-				}
-				else if(email.equals("q")) {
-					System.out.println("Quitting...");
-					break;
-				}
-					
-				}while(!check && !email.equals("q"));
-					
-					GenerateSalesReport gsrAdmin = new GenerateSalesReport(email);
-					gsrAdmin.printReport(email);
-					break;
-	
-				case 2:
-					BookingDAO fileSearch = new BookingDAO();
-					System.out.println("Insert booking keyword to search: ");
-					String keyword = scanner.nextLine();
-					fileSearch.parseFile("../AirbnbBookingSystem/Booking.txt", (keyword));
-					break;
-				
-				case 0: 
-					exit = true;
-					break;
-				default:
-					System.out.println("Invalid input try again");
-					break;
+					if (!check && !email.equals("q")) {
+						System.out.println("Email Not found.");
+					} else if (email.equals("q")) {
+						System.out.println("Quitting...");
+						break;
+					}
+
+				} while (!check && !email.equals("q"));
+
+				GenerateSalesReport gsrAdmin = new GenerateSalesReport(email);
+				gsrAdmin.printReport(email);
+				break;
+
+			case 2:
+				BookingDAO fileSearch = new BookingDAO();
+				System.out.println("Insert booking keyword to search: ");
+				String keyword = scanner.nextLine();
+				fileSearch.parseFile("../AirbnbBookingSystem/Booking.txt", (keyword));
+				break;
+
+			case 0:
+				exit = true;
+				break;
+			default:
+				System.out.println("Invalid input try again");
+				break;
 			}
-		} while(!exit);
-		
+		} while (!exit);
 
 	}
 
 	public static void displayHostMainMenu(Person usingPerson) throws Exception {
 		Scanner scanner = new Scanner(System.in);
 		BookingDAO bd = new BookingDAO();
-		
+
 		do {
 			System.out.println("Option 1: Search Booking");
 			System.out.println("Option 2: Generate Sales Report");
 			System.out.println("Option 3: Add Premise");
 			System.out.println("Option 0: Exit");
-		switch (ac.getMenuInput()) {
+			switch (ac.getMenuInput()) {
 			case 1:
 				bd.searchBookingHost(usingPerson.getRegEmail());
-				//bd.viewBooking(selected);
+				// bd.viewBooking(selected);
 
 				break;
 
 			case 2:
 				GenerateSalesReport gsr = new GenerateSalesReport(usingPerson.getRegEmail());
 				gsr.printReport(usingPerson.getRegEmail());
-				
+
 				break;
-				
+
 			case 3:
 				ac.createNewPremises(usingPerson);
 				break;
@@ -213,8 +205,8 @@ public class UI {
 			default:
 				System.out.println("Invalid input try again");
 				break;
-		}
-		}while(!exit);
+			}
+		} while (!exit);
 	}
 
 	public static int askEventNo(int beginEventNo, int endEventNo) {
@@ -244,6 +236,5 @@ public class UI {
 		}
 		return eventNo;
 	}
-	
-	
+
 }
