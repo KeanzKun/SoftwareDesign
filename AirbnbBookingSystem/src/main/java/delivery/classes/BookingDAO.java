@@ -86,18 +86,19 @@ public class BookingDAO {
 		int days = calculateDays(checkInDate, checkOutDate);
 		System.out.print(days);
 
+		double price = 0;
+
 		ArrayList<Premises> premiseList = new ArrayList<Premises>();
 		for(Premises premise : premiseList) {
-			if(bookingValue.getRegEmail().equals(email)) {
-				bookingDAO.viewBooking(bookingValue);
+			if(premise.equals(premiseID)) {
+				price = premise.getPrice();
 			}		
 		}
 
-		totalAmount = 50.00;
+		totalAmount = price*days;
 		serviceFee = totalAmount*0.05;
 		
 		Date today = new Date();
-		
 		
 		Booking newBooking = new Booking(bookingID, regEmail, premiseID, 
 				today, checkInDate, checkOutDate, noOfPerson, totalAmount, serviceFee);
@@ -108,9 +109,7 @@ public class BookingDAO {
 		System.out.println("Booking successfully recorded.");
 		System.out.println("Press ENTER to go to menu.");
 		
-		input.nextLine();
-		
-			
+		input.nextLine();		
 	}
 
 	public static void viewBooking(Booking booking) throws Exception {
