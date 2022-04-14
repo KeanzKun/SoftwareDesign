@@ -49,25 +49,25 @@ public class BookingDAO {
 		userInput = input.nextLine();
 		checkInInput = userInput;
 		checkInDate = ft.parse(checkInInput);
-		System.out.println("check in date: " + checkInDate); 
+		//System.out.println("check in date: " + checkInDate); 
 
 		// prompt check-out-date
 		System.out.print("Enter Check-out-date(yyyy-mm-dd):");
 		userInput = input.nextLine();
 		checkOutInput = userInput;
 		checkOutDate = ft.parse(checkOutInput);
-		System.out.println("check out date: " + checkOutDate);
+		//System.out.println("check out date: " + checkOutDate);
 		
 		// prompt permiseID
 		System.out.print("Select permise:");
 		permiseID = input.nextLine();
-		System.out.println("permiseID: " + permiseID);
+		//System.out.println("permiseID: " + permiseID);
 		
 		// prompt number of person
 		System.out.print("Enter number of person:");
 		userInput = input.nextLine();
 		noOfPerson = Integer.parseInt(userInput);
-		System.out.println("Number of person: " + noOfPerson);
+		//System.out.println("Number of person: " + noOfPerson);
 		 
 		
 		paymentInput = "creditcard";
@@ -84,8 +84,8 @@ public class BookingDAO {
 		bookingList.add(newBooking);
 		
 		bf.save(bookingList);	
-		System.out.print("Booking successfully recorded.");
-		System.out.print("Press ENTER to go to menu.");
+		System.out.println("Booking successfully recorded.");
+		System.out.println("Press ENTER to go to menu.");
 		
 		input.nextLine();
 		

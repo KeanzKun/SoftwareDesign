@@ -30,11 +30,6 @@ public class UI {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Option 1: Add Booking");
 		System.out.println("Option 2: View Booking");
-		System.out.println("Option 3: Search Booking");
-		System.out.println("Option 4: Update Booking");
-		System.out.println("Option 5: Delete Booking");
-
-		int input = scanner.nextInt();
 
 		BookingDAO bd = new BookingDAO();
 
@@ -113,6 +108,7 @@ public class UI {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Option 1: Search Booking");
 		System.out.println("Option 2: Generate Sales Report");
+		System.out.println("Option 3: Add Premise");
 		
 		switch (ac.getMenuInput()) {
 			case 1:
@@ -123,6 +119,9 @@ public class UI {
 				System.out.println("Insert booking keyword to search: ");
 				String keyword = scanner.nextLine();
 				//fileSearch.parseFile("../AirbnbBookingSystem/Booking.txt", (keyword));
+				break;
+				
+			case 3:
 				break;
 
 			default:
