@@ -20,7 +20,6 @@ public class PremisesList {
 		}
 	}
 	
-	
 	private int getNewPremiseID() {
 		int newPremiseID = 0;
 		
